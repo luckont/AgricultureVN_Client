@@ -1,35 +1,88 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from "../images/logo_ngang.png"
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "../images/logo_ngang.png";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/actions/authAction";
 
 const Header = () => {
+
+    const dispatch = useDispatch()
+    const auth = useSelector((state) => state.auth?.user)
+
+    const navLinks = [
+        { label: "Tin nhắn", icon: "send", path: "/message" },
+        { label: "Thông báo", icon: "notifications", path: "/notify" },
+    ];
+
     return (
         <div>
-            <div className='banner'>
+            <div className="banner">
                 <img src={logo} alt="logo" height={100} />
             </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="menu ">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <Link class="nav-link active" aria-current="page" to="/">Home</Link>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <Link class="nav-link dropdown-toggle" to="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Trang cá nhân
-                            </Link>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><Link class="dropdown-item" to="#">Trang cá nhân</Link></li>
-                                <li><Link class="dropdown-item" to="#">Dark Mode</Link></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><Link class="dropdown-item" to="#">Đăng xuất</Link></li>
-                            </ul>
-                        </li>
-                    </ul>
+            <nav className="navbar navbar-expand navbar-light bg-light">
+                <div className="container-fluid">
+                    <Link className="navbar-brand" to="/">
+                        Trang chủ
+                    </Link>
+
+                    <div className="collapse navbar-collapse" id="navbarNav">
+                        <ul className="navbar-nav me-auto">
+                            <li className="nav-item">
+                                <Link className="nav-link" to="#">
+                                    Link
+                                </Link>
+                            </li>
+                        </ul>
+
+                        <ul className="navbar-nav">
+                            {navLinks.map((link, index) => (
+                                <li className="nav-item" key={index}>
+                                    <Link className="nav-link active" to={link.path}>
+                                        <span className="material-icons">{link.icon}</span>
+                                    </Link>
+                                </li>
+                            ))}
+
+                            <li className="nav-item dropdown">
+                                <span
+                                    className="nav-link dropdown-toggle"
+                                    id="navbarDropdown"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Cá nhân
+                                </span>
+                                <ul
+                                    className="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="navbarDropdown"
+                                >
+                                    <li>
+                                        <Link className="dropdown-item" to="#">
+                                            Trang cá nhân
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <label className="dropdown-item" htmlFor="theme">
+                                            Dark Mode
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <hr className="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="#" onClick={() => dispatch(logout())}>
+                                            Đăng xuất
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </div>
     );
-}
+};
 
 export default Header;

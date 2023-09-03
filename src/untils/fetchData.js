@@ -7,8 +7,10 @@ export const getDataAPI = async (url, token) => {
     return res
 }
 
-export const postDataAPI = async (url, post) => {
-    const res = await axios.post(`/auth/${url}`, post)
+export const postDataAPI = async (url, post, token) => {
+    const res = await axios.post(`/auth/${url}`, post, {
+        headers: { token: `Bearer ${token}` }
+    })
     return res
 }
 

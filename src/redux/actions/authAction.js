@@ -68,3 +68,18 @@ export const rfToken = () => async (dispatch) => {
     }
   }
 }
+
+export const logout = () => async (dispatch) => {
+  try {
+    localStorage.removeItem("firstLogin")
+    await postDataAPI("logout")
+    window.location.href = "/"
+  } catch (err) {
+    dispatch({
+      type: "NOTIFY",
+      payload: {
+        err: err.response.data.msg
+      }
+    })
+  }
+}
