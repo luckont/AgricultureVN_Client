@@ -1,4 +1,5 @@
 export const GLOBALTYPES = {
     AUTH: "AUTH",
-    NOTIFY: "NOTIFY"
+    NOTIFY: "NOTIFY",
+    MODE: "MODE"
 }

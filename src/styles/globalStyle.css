@@ -12,6 +12,14 @@
     filter: invert(1);
 }
 
+#theme:checked ~ .App img {
+    filter: invert(1);
+}
+
+img{
+    object-fit: cover;
+}
+
 .App {
     width: 100%;
     min-height: 100vh;
@@ -19,12 +27,17 @@
 }
 
 .main {
-    max-width: 1000px;
+    max-width: 1500px;
     width: 100%;
     margin: auto;
 }
 
+
 /* AUTH style in here */
-@import url("./styles/authStyle.css");
+@import url("./authStyle.css");
 
+/* HEADER style  */
+@import url("./headerStyle.css");
 
+/* AVATA style  */
+@import url("./avatarStyle.css");

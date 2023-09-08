@@ -78,7 +78,7 @@ const LoginPage = () => {
         </button>
         <p className="my-2">
           Bạn chưa có tài khoản?{" "}
-          <Link to="/RegisterPage" style={{ textDecoration: "none" }}>
+          <Link to="/register" style={{ textDecoration: "none" }}>
             Đăng ký
           </Link>
         </p>
