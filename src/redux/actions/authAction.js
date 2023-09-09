@@ -10,7 +10,7 @@ export const register = (data) => async (dispatch) => {
     }
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
     const res = await postDataAPI("register", data);
-    dispatch({ type: GLOBALTYPES.NOTIFY, payload: res.data.msg })
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: { success: res.data.msg } })
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
@@ -33,7 +33,7 @@ export const login = (data) => async (dispatch) => {
       }
     })
     localStorage.setItem("firstLogin", true)
-    dispatch({ type: GLOBALTYPES.NOTIFY, payload: res.data.msg });
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: { success: res.data.msg } });
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,

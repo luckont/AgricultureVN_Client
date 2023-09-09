@@ -28,8 +28,15 @@ export const patchDataAPI = async (url, post, token) => {
     return res
 }
 
-export const DeleteDataAPI = async (url, token) => {
+export const deleteDataAPI = async (url, token) => {
     const res = await axios.delete(`/auth/${url}`, {
+        headers: { token: `Bearer ${token}` }
+    })
+    return res
+}
+
+export const getDataAPIUser = async(url, token) => {
+    const res = await axios.get(`/user/${url}`, {
         headers: { token: `Bearer ${token}` }
     })
     return res

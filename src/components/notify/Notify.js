@@ -1,16 +1,44 @@
-import React from 'react';
-import { useSelector } from "react-redux"
-import Loading from './Loading';
-// import Alert from './Alert';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GLOBALTYPES } from "../../redux/actions/globalTyles";
+import Alert from "./Alert";
+import Loading from "./Loading";
 
-const Notify = () => {
-    const notify = useSelector(state => state.notify?.loading)
-    return (
-        <div>
-            {notify && <Loading />}
-            {/* {notify.err && <Alert msg={notify.err} bgColor={"alert-danger"}/>} */}
-        </div>
-    );
+function Notify() {
+  const dispatch = useDispatch();
+  const notify = useSelector((state) => state.notify);
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (notify.err || notify.success) {
+      setShowAlert(true);
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+        dispatch({ type: GLOBALTYPES.NOTIFY, payload: {} });
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [notify.err, notify.success, dispatch]);
+
+  return (
+    <div>
+      {notify.loading && <Loading />}
+      {showAlert && (
+        <Alert
+          msg={{
+            title: notify.err ? "Error" : "Success",
+            body: notify.err || notify.success,
+          }}
+          handleShow={() => {
+            setShowAlert(false);
+            dispatch({ type: GLOBALTYPES.NOTIFY, payload: {} });
+          }}
+          bgColor={notify.err ? "bg-danger" : "bg-success"}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Notify;

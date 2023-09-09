@@ -1,3 +1,10 @@
+:root {
+    --app-color:#ffffff;
+    --main-color: #4BEF76;
+    --background-color: #88C431
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -23,21 +30,21 @@ img{
 .App {
     width: 100%;
     min-height: 100vh;
-    background: #ffffff;
+    background: var(--app-color);
 }
 
 .main {
-    max-width: 1500px;
+    /* max-width: 1500px; */
     width: 100%;
     margin: auto;
 }
 
 
-/* AUTH style in here */
+/* AUTH style */
 @import url("./authStyle.css");
 
-/* HEADER style  */
+/* HEADER style */
 @import url("./headerStyle.css");
 
-/* AVATA style  */
+/* AVATA style */
 @import url("./avatarStyle.css");

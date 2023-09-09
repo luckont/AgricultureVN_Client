@@ -23,7 +23,7 @@ const RegisterPage = () => {
         e.preventDefault();
         dispatch(register(userData));
         if (!notify.err) {
-            navigate('/LoginPage');
+            navigate('/');
         }
     };
     const handleChangeInput = (e) => {
