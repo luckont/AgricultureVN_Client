@@ -48,3 +48,6 @@ img{
 
 /* AVATA style */
 @import url("./avatarStyle.css");
+
+/* PROFILE USER style  */
+@import url("./profile.css")

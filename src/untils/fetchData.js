@@ -41,3 +41,9 @@ export const getDataAPIUser = async(url, token) => {
     })
     return res
 }
+export const putDataAPIUser = async(url, post, token) => {
+    const res = await axios.put(`/user/${url}`, post, {
+        headers: { token: `Bearer ${token}` }
+    })
+    return res
+}

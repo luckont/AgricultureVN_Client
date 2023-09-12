@@ -62,6 +62,18 @@
     margin-top: 5px;
 }
 
+.header .search_box .loading_icon{
+    position: absolute;
+    top: 25%;
+    right: 1px;
+    transform: translate(-30%);
+}
+
+.header .search_box .loading_icon .spinner-border {
+    height: 15px;
+    width: 15px;
+}
+
 /* responsive header  */
 @media (max-width: 768px) {
     .header .menu {

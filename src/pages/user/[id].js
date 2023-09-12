@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
+import Infor from "../../components/profileUser/Infor";
+import Post from "../../components/profileUser/Post";
 
 const User = () => {
-    return (
-        <div>
-            <h1>User</h1>
-        </div>
-    );
-}
+  return (
+    <div className="profile">
+      <Infor/>
+      <Post/>
+    </div>
+  );
+};
 
 export default User;
