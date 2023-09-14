@@ -68,6 +68,7 @@ const EditProfile = ({ setOnEdit }) => {
             width={200}
           />
           <span>
+            <i className="fas fa-camera"></i>
             <p>Chỉnh sửa</p>
             <input
               type="file"

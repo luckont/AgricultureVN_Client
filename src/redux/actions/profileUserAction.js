@@ -1,10 +1,12 @@
 import { getDataAPIUser, putDataAPIUser } from "../../untils/fetchData";
 import { imageUpload } from "../../untils/imageUpload";
-import { GLOBALTYPES } from "./globalTyles";
+import { DeleteData, GLOBALTYPES } from "./globalTyles";
 
 export const PROFILE_USER = {
   LOADING: "LOADING",
   GET_USER: "GET_USER",
+  FOLLOW: "FOLLOW",
+  UNFOLLOW: "UNFOLLOW",
 };
 
 export const getUserProfile = (auth, id) => async (dispatch) => {
@@ -24,57 +26,147 @@ export const getUserProfile = (auth, id) => async (dispatch) => {
   }
 };
 
-export const updateUserProfile =
-  ({ userData, profilePicture, auth }) =>
-    async (dispatch) => {
-      if (!userData.username)
-        return dispatch({
-          type: GLOBALTYPES.NOTIFY,
-          payload: { err: "Nhập tên đăng nhập !" },
-        });
-      if (userData.username.length > 25)
-        return dispatch({
-          type: GLOBALTYPES.NOTIFY,
-          payload: { err: "Tên đăng nhập quá dài !" },
-        });
-      if (userData.desc.length > 200)
-        return dispatch({
-          type: GLOBALTYPES.NOTIFY,
-          payload: { err: "Thông tin quá dài !" },
-        });
+export const updateUserProfile = ({ userData, profilePicture, auth }) => async (dispatch) => {
+  if (!userData.username)
+    return dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: "Nhập tên đăng nhập !" },
+    });
+  if (userData.username.length > 25)
+    return dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: "Tên đăng nhập quá dài !" },
+    });
+  if (userData.desc.length > 200)
+    return dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: "Thông tin quá dài !" },
+    });
 
-      try {
-        let avatar;
-        dispatch({ type: GLOBALTYPES.NOTIFY, payload: true });
+  try {
+    let avatar;
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: true });
 
-        if (profilePicture) avatar = await imageUpload([profilePicture]);
+    if (profilePicture) avatar = await imageUpload([profilePicture]);
 
-        const res = await putDataAPIUser(auth.user._id, {
+    const res = await putDataAPIUser(
+      auth.user._id,
+      {
+        ...userData,
+        profilePicture: profilePicture
+          ? avatar[0].url
+          : auth.user.profilePicture,
+      },
+      auth.token
+    );
+
+    dispatch({
+      type: GLOBALTYPES.AUTH,
+      payload: {
+        ...auth,
+        user: {
+          ...auth.user,
           ...userData,
           profilePicture: profilePicture
             ? avatar[0].url
             : auth.user.profilePicture,
-        });
+        },
+      },
+    });
 
-        dispatch({
-          type: GLOBALTYPES.AUTH,
-          payload: {
-            ...auth,
-            user: {
-              ...auth.user,
-              ...userData,
-              profilePicture: profilePicture
-                ? avatar[0].url
-                : auth.user.profilePicture,
-            },
-          },
-        });
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { success: res.data.msg },
+    });
+  } catch (err) {
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: err.response.data.msg },
+    });
+  }
+};
 
-        dispatch({ type: GLOBALTYPES.NOTIFY, payload: {success: res.data.msg} });
-      } catch (err) {
-        dispatch({
-          type: GLOBALTYPES.NOTIFY,
-          payload: { err: err.response.data.msg },
-        });
+export const followUser = ({ users, user, auth }) => async (dispatch) => {
+  let newUser;
+  if (users.every((item) => item._id !== user._id)) {
+    newUser = { ...user, followers: [...user.followers, auth.user] };
+  } else {
+    users.forEach((item) => {
+      if (item._id === user._id) {
+        newUser = { ...item, followers: [...item.followers, auth.user] };
       }
-    };
+    });
+  }
+  dispatch({
+    type: PROFILE_USER.FOLLOW,
+    payload: newUser,
+  });
+
+  dispatch({
+    type: GLOBALTYPES.AUTH,
+    payload: {
+      ...auth,
+      user: { ...auth.user, subscribes: [...auth.user.followers, newUser] },
+    },
+  });
+
+  try {
+    const res = await putDataAPIUser(`${user._id}/follow`, null, auth.token);
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { success: res.data.msg },
+    });
+  } catch (err) {
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: err.response.data.msg },
+    });
+  }
+};
+export const unFollowUser = ({ users, user, auth }) => async (dispatch) => {
+  let newUser;
+
+    if (users.every((item) => item._id !== user._id)) {
+      newUser = { ...user, followers: DeleteData(user.followers, auth.user._id) };
+    } else {
+      users.forEach((item) => {
+        if (item._id === user._id) {
+          newUser = { ...item, followers: DeleteData(item.followers, auth.user._id) };
+        }
+      });
+    }
+
+  dispatch({
+    type: PROFILE_USER.UNFOLLOW,
+    payload: newUser,
+  });
+
+  dispatch({
+    type: GLOBALTYPES.AUTH,
+    payload: {
+      ...auth,
+      user: {
+        ...auth.user,
+        subscribes: DeleteData(auth.user.subscribes, newUser._id),
+      },
+    },
+  });
+
+  try {
+    const res = await putDataAPIUser(
+      `${user._id}/unfollow`,
+      null,
+      auth.token
+    );
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { success: res.data.msg },
+    });
+  } catch (err) {
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: err.response.data.msg },
+    });
+    console.log(err.response.data.msg);
+  }
+};

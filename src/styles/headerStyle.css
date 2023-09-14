@@ -55,8 +55,8 @@
 .header .search_box .users {
     position: absolute;
     width: 100px;
-    min-width: 250px;
-    background: #eeeeee;
+    min-width: 300px;
+    background: #F7FFEC;
     max-height: calc(100vh - 150px);
     overflow: auto;
     margin-top: 5px;
