@@ -9,9 +9,11 @@ import HomePage from "./pages/home"
 import RegisterPage from "./pages/register";
 import Header from "./components/header/Header";
 import Notify from "./components/notify/Notify";
+import StatusModal from "./components/StatusModal";
 
 function App() {
   const auth  = useSelector((state) => state.auth?.token)
+  const status = useSelector((state) => state.status)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,6 +27,7 @@ function App() {
       <div className="App">
         <div className="main">
           {auth && <Header/>}
+          {status && <StatusModal/>}
           <Routes>
             <Route exact path="/" element={auth ? <HomePage /> : <LoginPage />} />
             <Route exact path="/register" element={<RegisterPage />} />
