@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { rfToken } from "./redux/actions/authAction";
+import { getPosts } from "./redux/actions/postAction";
 
 import RoutePage from "./customRouter/RoutePage";
 import LoginPage from "./pages/login";
@@ -19,6 +20,10 @@ function App() {
   useEffect(() => {
     dispatch(rfToken())
   }, [dispatch])
+
+  useEffect(() => {
+    if(auth) dispatch(getPosts(auth))
+  }, [dispatch, auth])
 
   return (
     <Router>

@@ -1,4 +1,4 @@
-import { getDataAPIUser, putDataAPIUser } from "../../untils/fetchData";
+import { getDataAPI, putDataAPI } from "../../untils/fetchData";
 import { imageUpload } from "../../untils/imageUpload";
 import { DeleteData, GLOBALTYPES } from "./globalTyles";
 
@@ -12,7 +12,7 @@ export const PROFILE_USER = {
 export const getUserProfile = (auth, id) => async (dispatch) => {
   try {
     dispatch({ type: PROFILE_USER.LOADING, payload: true });
-    const res = await getDataAPIUser(`/${id}`, auth);
+    const res = await getDataAPI(`/user/${id}`, auth);
     dispatch({
       type: PROFILE_USER.GET_USER,
       payload: res.data,
@@ -49,8 +49,8 @@ export const updateUserProfile = ({ userData, profilePicture, auth }) => async (
 
     if (profilePicture) avatar = await imageUpload([profilePicture]);
 
-    const res = await putDataAPIUser(
-      auth.user._id,
+    const res = await putDataAPI(
+      `/user/${auth.user._id}`,
       {
         ...userData,
         profilePicture: profilePicture
@@ -111,7 +111,7 @@ export const followUser = ({ users, user, auth }) => async (dispatch) => {
   });
 
   try {
-    const res = await putDataAPIUser(`${user._id}/follow`, null, auth.token);
+    const res = await putDataAPI(`/user/${user._id}/follow`, null, auth.token);
     dispatch({
       type: GLOBALTYPES.NOTIFY,
       payload: { success: res.data.msg },
@@ -153,8 +153,8 @@ export const unFollowUser = ({ users, user, auth }) => async (dispatch) => {
   });
 
   try {
-    const res = await putDataAPIUser(
-      `${user._id}/unfollow`,
+    const res = await putDataAPI(
+      `/user/${user._id}/unfollow`,
       null,
       auth.token
     );

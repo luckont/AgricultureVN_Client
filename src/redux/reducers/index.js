@@ -4,5 +4,13 @@ import notify from "./notifyReducer";
 import mode from "./modeReducer";
 import profile from "./profileUserReducer";
 import status from "./statusReducer";
+import postHome from "./postReducer";
 
-export default combineReducers({ auth, notify, mode, profile, status });
+export default combineReducers({
+  auth,
+  notify,
+  mode,
+  profile,
+  status,
+  postHome,
+});

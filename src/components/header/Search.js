@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDataAPIUser } from "../../untils/fetchData";
+import { getDataAPI } from "../../untils/fetchData";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import UserCard from "../UserCard";
 
@@ -21,7 +21,7 @@ const Search = () => {
     if (!search) return;
     try {
       setLoadData(true);
-      await getDataAPIUser(`/search/result?username=${search}`, auth).then(
+      await getDataAPI(`/user/search/result?username=${search}`, auth).then(
         (res) => {
           const result = res.data.users;
           if (result.length === 0) {

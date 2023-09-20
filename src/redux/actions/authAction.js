@@ -9,7 +9,7 @@ export const register = (data) => async (dispatch) => {
       return dispatch({ type: GLOBALTYPES.NOTIFY, payload: checkForm.errMsg })
     }
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
-    const res = await postDataAPI("register", data);
+    const res = await postDataAPI("/auth/register", data);
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { success: res.data.msg } })
   } catch (err) {
     dispatch({
@@ -24,7 +24,7 @@ export const register = (data) => async (dispatch) => {
 export const login = (data) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
-    const res = await postDataAPI("login", data);
+    const res = await postDataAPI( "/auth/login", data);
     dispatch({
       type: GLOBALTYPES.AUTH,
       payload: {
@@ -49,7 +49,7 @@ export const rfToken = () => async (dispatch) => {
   if (firstLogin) {
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
     try {
-      const res = await postDataAPI("refresh");
+      const res = await postDataAPI("/auth/refresh");
       dispatch({
         type: GLOBALTYPES.AUTH,
         payload: {
@@ -60,7 +60,7 @@ export const rfToken = () => async (dispatch) => {
       dispatch({ type: GLOBALTYPES.NOTIFY, payload: {} });
     } catch (err) {
       dispatch({
-        type: "NOTIFY",
+        type: GLOBALTYPES.NOTIFY,
         payload: {
           err: err.response.data.msg
         }
@@ -72,7 +72,7 @@ export const rfToken = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     localStorage.removeItem("firstLogin")
-    await postDataAPI("logout")
+    await postDataAPI("/auth/logout")
     window.location.href = "/"
   } catch (err) {
     dispatch({

@@ -10,8 +10,15 @@ export const checkImage = (file) => {
 export const imageUpload = async (image) => {
   let arr = [];
   for (const item of image) {
+
     const formData = new FormData();
-    formData.append("file", item);
+
+    if (item.camera) {
+      formData.append("file", item.camera);
+    } else {
+      formData.append("file", item);
+    }
+    
     formData.append("upload_preset", "auwemzvh");
     formData.append("cloud_name", "duw0njssy");
     formData.append("folder", "image_user_AgricultureVN");

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
+import { createPost } from "../redux/actions/postAction";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const [content, setContent] = useState("");
@@ -16,7 +18,7 @@ const StatusModal = () => {
 
     files.forEach((file) => {
       if (!file) return (err = "File không tồn tại !");
-      if (file.type !== "img/jpg" && file.type !== "image/png") {
+      if (file.type !== "image/jpeg" && file.type !== "image/png") {
         return (err = "Đinh dạng file không đúng !");
       }
 
@@ -31,10 +33,19 @@ const StatusModal = () => {
     newArr.splice(index, 1);
     setImages(newArr);
   };
-  //handleStream
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createPost({ content, images, auth }));
+
+    setContent("");
+    setImages([]);
+    dispatch({ type: GLOBALTYPES.STATUS, payload: false })
+  };
+
   return (
     <div className="status_modal">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="status_title">
           <h5 className="m-0">Tạo bài viết mới</h5>
           <span
@@ -62,7 +73,6 @@ const StatusModal = () => {
           </div>
           <div className="input_images">
             <i className="fas fa-camera" />
-
             <div className="file_upload">
               <i className="fas fa-image" />
               <input
