@@ -23,6 +23,7 @@
 }
 
 /* Post style  */
+/* Card header  */
 .posts .card_header {
     display: flex;
     justify-content: space-between;
@@ -38,4 +39,37 @@
 .posts .card_header .dropdown-item {
     display: flex;
     margin: 5px 0;
+}
+/* Card body  */
+
+.posts .card_body .content {
+    padding: 0 25px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+} 
+.posts .card_body .content .readMore {
+    cursor: pointer;
+    color: #5e5e5e;
+}
+
+.posts .carousel-inner {
+    height: 400px;
+}
+
+.posts .carousel-inner img{
+    height: 400px;
+    object-fit: contain;
+}
+
+/* Card footer */
+.posts .card_icon_menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: pointer;
+}
+
+.posts .card_icon_menu .svg-inline--fa {
+    font-size: 1.5rem;
+    margin: 10px;
 }

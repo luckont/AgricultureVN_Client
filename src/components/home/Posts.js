@@ -10,7 +10,7 @@ const Posts = () => {
 
     return (
         <div>
-            <h1 className="posts">
+            <div className="posts">
                 {
                     postHome.posts.map(post => (
                         <div key={post._id} className='card my-3'>
@@ -20,7 +20,7 @@ const Posts = () => {
                         </div>
                     ))
                 }
-            </h1>
+            </div>
         </div>
     );
 }

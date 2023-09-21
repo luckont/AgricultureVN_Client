@@ -8,7 +8,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="hom row mx-0">
+      <div className="home row mx-0">
         <div className="col-md-8">
           <Status />
           {
@@ -22,7 +22,7 @@ const HomePage = () => {
           }
         </div>
         <div className="col-md-4 bg-secondary">suggestion</div>
-      </h1>
+      </div>
     </div>
   );
 };

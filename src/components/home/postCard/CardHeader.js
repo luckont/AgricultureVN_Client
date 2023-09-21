@@ -7,6 +7,10 @@ import { useSelector } from "react-redux";
 const CardHeader = ({ post }) => {
     const auth = useSelector((state) => state.auth);
 
+    const handleEditPost = () => {
+        console.log(post)
+    }
+
     return (
         <div className="card_header">
             <div className="d-flex">
@@ -31,16 +35,16 @@ const CardHeader = ({ post }) => {
                 <div className="dropdown-menu">
                     {auth.user._id === post.user._id &&
                         <>
-                            <div className="dropdown-item">
-                                <span class="material-symbols-outlined">edit</span> Chỉnh sửa bài viết
+                            <div className="dropdown-item" onClick={handleEditPost}>
+                                <span className="material-symbols-outlined">edit</span> Chỉnh sửa bài viết
                             </div>
                             <div className="dropdown-item">
-                                <span class="material-symbols-outlined">delete</span> Xóa bài viết
+                                <span className="material-symbols-outlined">delete</span> Xóa bài viết
                             </div>
                         </>
                     }
                     <div className="dropdown-item">
-                        <span class="material-symbols-outlined">share</span> Chia sẻ bài viết
+                        <span className="material-symbols-outlined">share</span> Chia sẻ bài viết
                     </div>
                 </div>
             </div>

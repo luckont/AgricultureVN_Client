@@ -5,6 +5,7 @@ import FollowBtn from "./FollowBtn";
 
 const Follower = ({ users, setShowFollowers }) => {
   const auth = useSelector((state) => state.auth);
+  console.log({users})
   return (
     <div className="follow">
       <div className="follow_container">

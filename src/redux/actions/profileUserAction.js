@@ -93,6 +93,7 @@ export const followUser = ({ users, user, auth }) => async (dispatch) => {
   } else {
     users.forEach((item) => {
       if (item._id === user._id) {
+        console.log(item._id)
         newUser = { ...item, followers: [...item.followers, auth.user] };
       }
     });
@@ -106,7 +107,7 @@ export const followUser = ({ users, user, auth }) => async (dispatch) => {
     type: GLOBALTYPES.AUTH,
     payload: {
       ...auth,
-      user: { ...auth.user, subscribes: [...auth.user.followers, newUser] },
+      user: { ...auth.user, subscribes: [...auth.user.subscribes, newUser] },
     },
   });
 
