@@ -1,26 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import LikeBtn from "../../LikeBtn";
+import { useSelector, useDispatch } from "react-redux";
+import { likePost, unlikePost } from "../../../redux/actions/postAction";
 
 const CardFooter = ({ post }) => {
-    return (
-        <div className="card_footer">
-            <div className="card_icon_menu">
-                <div>
-                    <i className="fas fa-heart"></i>
-                    <Link to={`/post/${post._id}`} className="text-dark">
-                        <i className="fas fa-comment"></i>
-                    </Link>
-                    <i className="fas fa-share"></i>
-                </div>
-                <i className="fas fa-bookmark"></i>
-            </div>
-            <div className="d-flex justify-content-between">
-                <h6 style={{ padding: "0 25px", cursor: "pointer" }}>{post.like.length} Thích</h6>
-                <h6 style={{ padding: "0 25px", cursor: "pointer" }}>{post.comments.length} Bình luận</h6>
+  const auth = useSelector((state) => state.auth);
 
-            </div>
+  const [isLike, setIsLike] = useState(false);
+  const [loadLike, setLoadLike] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(post.like.find(lk=> lk._id === auth.user._id)){
+      setIsLike(true)
+    }
+  },[auth.user._id, post.like])
+
+  const handleLike = async () => {
+    if (loadLike) return;
+    setIsLike(true);
+    setLoadLike(true);
+    await dispatch(likePost({ post, auth }));
+    setLoadLike(false);
+  };
+
+  const handleUnLike = async () => {
+    if (loadLike) return;
+    setIsLike(false);
+    setLoadLike(true);
+    await dispatch(unlikePost({ post, auth }));
+    setLoadLike(false);
+  };
+
+  return (
+    <div className="card_footer">
+      <div className="card_icon_menu">
+        <div>
+          <LikeBtn
+            isLike={isLike}
+            handleLike={handleLike}
+            handleUnLike={handleUnLike}
+          />
+          <Link to={`/post/${post._id}`} className="text-dark">
+            <span className="material-symbols-outlined">comment</span>
+          </Link>
+          <span className="material-symbols-outlined">share</span>
         </div>
-    );
+        <span className="material-symbols-outlined">bookmark</span>
+      </div>
+      <div className="d-flex justify-content-between">
+        <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
+          {post.like.length} Thích
+        </h6>
+        <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
+          {post.comments.length} Bình luận
+        </h6>
+      </div>
+    </div>
+  );
 };
 
 export default CardFooter;

@@ -69,7 +69,7 @@
     cursor: pointer;
 }
 
-.posts .card_icon_menu .svg-inline--fa {
+.card_icon_menu span {
     font-size: 1.5rem;
     margin: 10px;
 }

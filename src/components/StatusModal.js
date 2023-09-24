@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
-import { createPost } from "../redux/actions/postAction";
+import { createPost, updatePost } from "../redux/actions/postAction";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
+  const status = useSelector((state) => state.status)
 
   const dispatch = useDispatch();
 
@@ -36,12 +37,25 @@ const StatusModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPost({ content, images, auth }));
+    if(status.onEdit) {
+      dispatch(updatePost({ content, images, auth, status }));
+
+    }else{
+      dispatch(createPost({ content, images, auth }));
+
+    }
 
     setContent("");
     setImages([]);
     dispatch({ type: GLOBALTYPES.STATUS, payload: false })
   };
+
+  useEffect(() => {
+    if(status.onEdit) {
+      setContent(status.desc)
+      setImages(status.img)
+    }
+  }, [status])
 
   return (
     <div className="status_modal">
@@ -66,7 +80,10 @@ const StatusModal = () => {
           <div className="show_imgs">
             {images.map((img, index) => (
               <div key={index} id="file_img" className="img-thumbnail">
-                <img src={URL.createObjectURL(img)} alt="images" />
+                <img src={
+                  img.url 
+                  ? img.url
+                  : URL.createObjectURL(img)} alt="images" />
                 <span onClick={() => delImage(index)}>&times;</span>
               </div>
             ))}

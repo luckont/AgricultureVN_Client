@@ -1,4 +1,5 @@
 import { POSTTYPES } from "../actions/postAction";
+import { EditData } from "../actions/globalTyles";
 
 const initialState = {
   posts: [],
@@ -25,6 +26,11 @@ const postReducer = (state = initialState, action) => {
         posts: action.payload.post,
         result: action.payload.result
       };
+      case POSTTYPES.UPDATE_POST:
+        return {
+          ...state,
+          posts: EditData(state.posts, action.payload._id, action.payload)
+        };
     default:
       return state;
   }
