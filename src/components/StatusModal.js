@@ -37,10 +37,10 @@ const StatusModal = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(status.onEdit) {
+    if (status.onEdit) {
       dispatch(updatePost({ content, images, auth, status }));
 
-    }else{
+    } else {
       dispatch(createPost({ content, images, auth }));
 
     }
@@ -51,7 +51,7 @@ const StatusModal = () => {
   };
 
   useEffect(() => {
-    if(status.onEdit) {
+    if (status.onEdit) {
       setContent(status.desc)
       setImages(status.img)
     }
@@ -81,9 +81,9 @@ const StatusModal = () => {
             {images.map((img, index) => (
               <div key={index} id="file_img" className="img-thumbnail">
                 <img src={
-                  img.url 
-                  ? img.url
-                  : URL.createObjectURL(img)} alt="images" />
+                  img.url
+                    ? img.url
+                    : URL.createObjectURL(img)} alt="images" />
                 <span onClick={() => delImage(index)}>&times;</span>
               </div>
             ))}

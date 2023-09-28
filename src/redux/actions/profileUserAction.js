@@ -168,6 +168,5 @@ export const unFollowUser = ({ users, user, auth }) => async (dispatch) => {
       type: GLOBALTYPES.NOTIFY,
       payload: { err: err.response.data.msg },
     });
-    console.log(err.response.data.msg);
   }
 };

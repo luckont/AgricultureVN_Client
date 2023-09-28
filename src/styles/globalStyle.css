@@ -48,10 +48,13 @@ img {
 @import url("./avatarStyle.css");
 
 /* PROFILE USER style  */
-@import url("./profile.css");
+@import url("./profileStyle.css");
 
 /* HOME style  */
 @import url("./homeStyle.css");
 
 /* STATUS MODAL style  */
 @import url("./statusModalStyle.css");
+
+/* COMMENT style  */
+@import url("./commentsStyle.css");

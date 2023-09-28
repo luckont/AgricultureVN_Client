@@ -5,13 +5,13 @@ const LikeBtn = ({ isLike, handleLike, handleUnLike }) => {
         <>
             {isLike ? (
                 <span
-                    className="material-symbols-outlined  text-danger"
-                    onClick={handleUnLike}>
+                    className="material-symbols-outlined text-danger"
+                    onClick={handleUnLike}
+                >
                     favorite
                 </span>
             ) : (
-                <span
-                    className="material-symbols-outlined"
+                <span className="material-symbols-outlined"
                     onClick={handleLike}>
                     favorite
                 </span>

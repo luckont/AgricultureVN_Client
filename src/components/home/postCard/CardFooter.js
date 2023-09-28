@@ -15,6 +15,8 @@ const CardFooter = ({ post }) => {
   useEffect(() => {
     if(post.like.find(lk=> lk._id === auth.user._id)){
       setIsLike(true)
+    }else{
+      setIsLike(false)
     }
   },[auth.user._id, post.like])
 

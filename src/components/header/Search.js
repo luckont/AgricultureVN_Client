@@ -55,7 +55,7 @@ const Search = () => {
         value={search}
         id="search"
         onChange={(e) =>
-          setSearch(e.target.value.toLocaleLowerCase().replace(/ /g, ""))
+          setSearch(e.target.value)
         }
       />
       <div className="search_icon" style={{ opacity: search ? 0 : 0.5 }}>
