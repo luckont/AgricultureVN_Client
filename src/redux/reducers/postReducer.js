@@ -1,9 +1,9 @@
 import { POSTTYPES } from "../actions/postAction";
-import { EditData } from "../actions/globalTyles";
+import { EditData, DeleteData } from "../actions/globalTyles";
 
 const initialState = {
-  posts: [],
   loading: false,
+  posts: [],
   result: 0,
   page: 2,
 };
@@ -20,17 +20,23 @@ const postReducer = (state = initialState, action) => {
         ...state,
         loading: action.payload,
       };
-    case POSTTYPES.GET_POST:
+    case POSTTYPES.GET_POSTS:
       return {
         ...state,
         posts: action.payload.post,
-        result: action.payload.result
+        result: action.payload.result,
+        page: action.payload.page
       };
-      case POSTTYPES.UPDATE_POST:
-        return {
-          ...state,
-          posts: EditData(state.posts, action.payload._id, action.payload)
-        };
+    case POSTTYPES.UPDATE_POST:
+      return {
+        ...state,
+        posts: EditData(state.posts, action.payload._id, action.payload)
+      };
+    case POSTTYPES.DELETE_POST:
+      return {
+        ...state,
+        posts: DeleteData(state.posts, action.payload._id)
+      };
     default:
       return state;
   }

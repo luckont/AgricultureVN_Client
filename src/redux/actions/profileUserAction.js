@@ -3,19 +3,28 @@ import { imageUpload } from "../../untils/imageUpload";
 import { DeleteData, GLOBALTYPES } from "./globalTyles";
 
 export const PROFILE_USER = {
-  LOADING: "LOADING",
+  LOADING: "LOADING_USER",
   GET_USER: "GET_USER",
   FOLLOW: "FOLLOW",
   UNFOLLOW: "UNFOLLOW",
+  GET_ID: "GET_USER_ID",
+  GET_POSTS: "GET_USER_POSTS"
 };
 
-export const getUserProfile = (auth, id) => async (dispatch) => {
+export const getUserProfile = ({auth, id}) => async (dispatch) => {
+ dispatch({type: PROFILE_USER.GET_ID, payload: id})
   try {
     dispatch({ type: PROFILE_USER.LOADING, payload: true });
-    const res = await getDataAPI(`/user/${id}`, auth);
+    const res = await getDataAPI(`/user/${id}`, auth.token);
+    const resPosts = await getDataAPI(`/post/user_posts/${id}`, auth.token);
+
     dispatch({
       type: PROFILE_USER.GET_USER,
       payload: res.data,
+    });
+    dispatch({
+      type: PROFILE_USER.GET_POSTS,
+      payload: {...resPosts.data, _id: id, page: 2},
     });
     dispatch({ type: PROFILE_USER.LOADING, payload: false });
   } catch (err) {
@@ -45,7 +54,7 @@ export const updateUserProfile = ({ userData, profilePicture, auth }) => async (
 
   try {
     let avatar;
-    dispatch({ type: GLOBALTYPES.NOTIFY, payload: true });
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: {loading: true} });
 
     if (profilePicture) avatar = await imageUpload([profilePicture]);
 

@@ -5,6 +5,7 @@ const initialState = {
     loading: false,
     users: [],
     posts: [],
+    ids: []
 };
 
 const profileUserReducer = (state = initialState, action) => {
@@ -35,6 +36,16 @@ const profileUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: EditData(state.users, action.payload._id, action.payload) 
+            };
+        case PROFILE_USER.GET_ID:
+            return {
+                ...state,
+                ids: [...state.ids, action.payload]
+            };
+        case PROFILE_USER.GET_POSTS:
+            return {
+                ...state,
+                posts: [...state.posts, action.payload]
             };
         default:
             return state;

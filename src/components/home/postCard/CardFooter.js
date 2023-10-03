@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LikeBtn from "../../LikeBtn";
+import ShareModal from "../../ShareModal";
 import { useSelector, useDispatch } from "react-redux";
 import { likePost, unlikePost } from "../../../redux/actions/postAction";
+import { BASE_URL } from "../../../untils/config";
 
 const CardFooter = ({ post }) => {
   const auth = useSelector((state) => state.auth);
 
   const [isLike, setIsLike] = useState(false);
   const [loadLike, setLoadLike] = useState(false);
+  const [isShare, setIsShare] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -48,7 +51,7 @@ const CardFooter = ({ post }) => {
           <Link to={`/post/${post._id}`} className="text-dark">
             <span className="material-symbols-outlined">comment</span>
           </Link>
-          <span className="material-symbols-outlined">share</span>
+          <span className="material-symbols-outlined" onClick={() => setIsShare(!isShare)}>share</span>
         </div>
         <span className="material-symbols-outlined">bookmark</span>
       </div>
@@ -60,6 +63,9 @@ const CardFooter = ({ post }) => {
           {post.comments.length} Bình luận
         </h6>
       </div>
+      { isShare &&
+        <ShareModal url={`${BASE_URL}/post/${post._id}`}/>
+      }
     </div>
   );
 };

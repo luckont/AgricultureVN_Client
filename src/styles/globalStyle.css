@@ -58,3 +58,6 @@ img {
 
 /* COMMENT style  */
 @import url("./commentsStyle.css");
+
+/* POST Thumb  */
+@import url("./postThumbStyle.css");

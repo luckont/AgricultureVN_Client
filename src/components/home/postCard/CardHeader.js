@@ -1,17 +1,37 @@
 import React from "react";
 import Avatar from "../../Avatar";
-import { Link } from "react-router-dom";
-import moment from "moment";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { GLOBALTYPES } from "../../../redux/actions/globalTyles";
+import { deletePost } from "../../../redux/actions/postAction";
+import { BASE_URL } from "../../../untils/config"
+import moment from "moment";
 
 const CardHeader = ({ post }) => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleEditPost = () => {
     dispatch({ type: GLOBALTYPES.STATUS, payload: { ...post, onEdit: true } });
   };
+  const handleDeletePost = () => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa bài viết này?");
+    if (confirmDelete) {
+      dispatch(deletePost({ post, auth }));
+      return navigate("/");
+    }
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`)
+      .then(() => {
+        dispatch({ type: GLOBALTYPES.NOTIFY, payload: { success: "Đã sao chép liên kết thành công" } })
+      })
+      .catch((error) => {
+        dispatch({ type: GLOBALTYPES.NOTIFY, payload: { err: "Lỗi khi sao chép:" + error } })
+      });
+  }
 
   return (
     <div className="card_header">
@@ -49,13 +69,13 @@ const CardHeader = ({ post }) => {
                 <span className="material-symbols-outlined">edit</span> Chỉnh
                 sửa bài viết
               </div>
-              <div className="dropdown-item">
+              <div className="dropdown-item" onClick={handleDeletePost}>
                 <span className="material-symbols-outlined">delete</span> Xóa
                 bài viết
               </div>
             </>
           )}
-          <div className="dropdown-item">
+          <div className="dropdown-item" onClick={handleCopyLink}>
             <span className="material-symbols-outlined">share</span> Chia sẻ bài
             viết
           </div>
