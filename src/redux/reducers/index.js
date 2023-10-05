@@ -5,7 +5,8 @@ import mode from "./modeReducer";
 import profile from "./profileUserReducer";
 import status from "./statusReducer";
 import postHome from "./postReducer";
-import detailPost from "./detailPostReducer"
+import detailPost from "./detailPostReducer";
+import suggestions from "./suggestionReducer"
 
 export default combineReducers({
   auth,
@@ -14,5 +15,6 @@ export default combineReducers({
   profile,
   status,
   postHome,
-  detailPost
+  detailPost,
+  suggestions
 });

@@ -11,6 +11,7 @@ import RegisterPage from "./pages/register";
 import Header from "./components/header/Header";
 import Notify from "./components/notify/Notify";
 import StatusModal from "./components/StatusModal";
+import { getSuggestions } from "./redux/actions/suggestionAction";
 
 function App() {
   const auth  = useSelector((state) => state.auth?.token)
@@ -22,7 +23,10 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    if(auth) dispatch(getPosts(auth))
+    if(auth) {
+      dispatch(getPosts(auth))
+      dispatch(getSuggestions(auth))
+    }
   }, [dispatch, auth])
 
   return (

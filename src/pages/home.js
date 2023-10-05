@@ -2,6 +2,7 @@ import React from "react";
 import Status from "../components/home/Status";
 import Posts from "../components/home/Posts";
 import { useSelector } from "react-redux";
+import RightSideBar from "../components/home/RightSideBar";
 
 const HomePage = () => {
   const postHome = useSelector((state) => state.postHome);
@@ -21,7 +22,9 @@ const HomePage = () => {
             )
           }
         </div>
-        <div className="col-md-4 bg-secondary">suggestion</div>
+        <div className="col-md-4">
+          <RightSideBar />
+        </div>
       </div>
     </div>
   );

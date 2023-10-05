@@ -7,7 +7,7 @@
 }
 
 .status .status_button{
-    background: #f1f1f1;
+    background: var(--bg-color);
     border: none;
     outline: none;
     border-radius: 30px;
@@ -19,7 +19,7 @@
 }
 
 .status .status_button:hover {
-    background: #ddd;
+    border: 1px solid var(--light-green);
 }
 
 /* Post style  */
@@ -72,4 +72,8 @@
 .card_icon_menu span {
     font-size: 1.5rem;
     margin: 10px;
+}
+
+.card_footer .shareModal {
+    background: var(--bg-color);
 }

@@ -18,7 +18,6 @@ const Post = () => {
             const newArr = detailPost.filter(post => post._id === id)
             setPost(newArr)
         }
-        // console.log(post)
     }, [auth, detailPost, dispatch, id])
     return (
         <div className="posts">

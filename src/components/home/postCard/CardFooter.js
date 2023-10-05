@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import LikeBtn from "../../LikeBtn";
 import ShareModal from "../../ShareModal";
 import { useSelector, useDispatch } from "react-redux";
-import { likePost, unlikePost } from "../../../redux/actions/postAction";
+import {
+  likePost,
+  unlikePost,
+  savePost,
+  unSavePost,
+} from "../../../redux/actions/postAction";
 import { BASE_URL } from "../../../untils/config";
 
 const CardFooter = ({ post }) => {
@@ -12,16 +17,26 @@ const CardFooter = ({ post }) => {
   const [isLike, setIsLike] = useState(false);
   const [loadLike, setLoadLike] = useState(false);
   const [isShare, setIsShare] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saveLoad, setSaveLoad] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(post.like.find(lk=> lk._id === auth.user._id)){
-      setIsLike(true)
-    }else{
-      setIsLike(false)
+    if (post.like.find((lk) => lk._id === auth.user._id)) {
+      setIsLike(true);
+    } else {
+      setIsLike(false);
     }
-  },[auth.user._id, post.like])
+  }, [auth.user._id, post.like]);
+
+  useEffect(() => {
+    if (auth.user.saved.find((id) => id === post._id)) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [auth.user.saved, post._id]);
 
   const handleLike = async () => {
     if (loadLike) return;
@@ -39,6 +54,22 @@ const CardFooter = ({ post }) => {
     setLoadLike(false);
   };
 
+  const handleSavePost = async () => {
+    if (saveLoad) return;
+
+    setSaveLoad(true);
+    await dispatch(savePost({ post, auth }));
+    setSaveLoad(false);
+  };
+
+  const handleUnSavePost = async () => {
+    if (saveLoad) return;
+
+    setSaveLoad(true);
+    await dispatch(unSavePost({ post, auth }));
+    setSaveLoad(false);
+  };
+
   return (
     <div className="card_footer">
       <div className="card_icon_menu">
@@ -51,9 +82,26 @@ const CardFooter = ({ post }) => {
           <Link to={`/post/${post._id}`} className="text-dark">
             <span className="material-symbols-outlined">comment</span>
           </Link>
-          <span className="material-symbols-outlined" onClick={() => setIsShare(!isShare)}>share</span>
+          <span
+            className="material-symbols-outlined"
+            onClick={() => setIsShare(!isShare)}
+          >
+            share
+          </span>
         </div>
-        <span className="material-symbols-outlined">bookmark</span>
+        {saved ? (
+          <span
+            className="material-symbols-outlined text-success"
+            onClick={handleUnSavePost}
+          >
+            bookmark
+          </span>
+        ) : (
+          <span className="material-symbols-outlined"
+            onClick={handleSavePost}>
+            bookmark
+          </span>
+        )}
       </div>
       <div className="d-flex justify-content-between">
         <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
@@ -63,9 +111,7 @@ const CardFooter = ({ post }) => {
           {post.comments.length} Bình luận
         </h6>
       </div>
-      { isShare &&
-        <ShareModal url={`${BASE_URL}/post/${post._id}`}/>
-      }
+      {isShare && <ShareModal url={`${BASE_URL}/post/${post._id}`} />}
     </div>
   );
 };
