@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { GLOBALTYPES } from "./redux/actions/globalTyles";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { rfToken } from "./redux/actions/authAction";
 import { getPosts } from "./redux/actions/postAction";
 import { getSuggestions } from "./redux/actions/suggestionAction";
-import { GLOBALTYPES } from "./redux/actions/globalTyles";
+import { getNotifies } from "./redux/actions/notifyAction";
 
 import RoutePage from "./customRouter/RoutePage";
 import LoginPage from "./pages/login";
@@ -33,6 +34,7 @@ function App() {
     if (auth) {
       dispatch(getPosts(auth))
       dispatch(getSuggestions(auth))
+      dispatch(getNotifies(auth))
     }
   }, [dispatch, auth])
 

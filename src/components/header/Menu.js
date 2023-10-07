@@ -4,10 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions/authAction";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import Avatar from "../Avatar";
+import NotifyModal from "../NotifyModal";
 
 const Menu = () => {
   const auth = useSelector((state) => state.auth?.user);
   const theme = useSelector((state) => state.mode);
+  const notify = useSelector((state) => state.notifyUser)
 
   const dispatch = useDispatch();
   const { pathName } = useLocation();
@@ -19,19 +21,39 @@ const Menu = () => {
   const navLinks = [
     { label: "Trang chủ", icon: "home", path: "/" },
     { label: "Tin nhắn", icon: "send", path: "/message" },
-    { label: "Thông báo", icon: "notifications", path: "/notify" },
   ];
   return (
     <div className="menu">
       <ul className="navbar-nav flex-row">
-        {navLinks.map((link, index) => ( 
+        {navLinks.map((link, index) => (
           <li className="nav-item" key={index}>
             <Link className={`nav-link ${isActive(link.path)}`} to={link.path}>
               <span className="material-icons">{link.icon}</span>
             </Link>
           </li>
         ))}
-        <li className="nav-item dropdown">
+
+        <li className="nav-item dropdown align-items-center d-flex" style={{padding: "0 15px"}}>
+          <span
+            className="nav-link position-relative"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            <span className="material-icons p-0" style={{color: notify.data.length > 0 ? "#004225" : ""}}>notifications</span>
+            <span className="notify_length">{notify.data.length}</span>
+          </span>
+          <div
+            className="dropdown-menu position-absolute dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <NotifyModal />
+          </div>
+        </li>
+
+        <li className="nav-item dropdown" style={{paddingLeft: "15px"}}>
           <span
             className="nav-link position-relative"
             id="navbarDropdown"

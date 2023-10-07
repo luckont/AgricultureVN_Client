@@ -5,7 +5,8 @@ import { createPost, updatePost } from "../redux/actions/postAction";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
-  const status = useSelector((state) => state.status)
+  const status = useSelector((state) => state.status);
+  const socket = useSelector((state) => state.socket);
 
   const dispatch = useDispatch();
 
@@ -41,7 +42,7 @@ const StatusModal = () => {
       dispatch(updatePost({ content, images, auth, status }));
 
     } else {
-      dispatch(createPost({ content, images, auth }));
+      dispatch(createPost({ content, images, auth, socket }));
 
     }
 

@@ -8,6 +8,7 @@ import postHome from "./postReducer";
 import detailPost from "./detailPostReducer";
 import suggestions from "./suggestionReducer";
 import socket from "./socketReducer";
+import notifyUser from "./notifyUserReducer";
 
 export default combineReducers({
   auth,
@@ -18,5 +19,6 @@ export default combineReducers({
   postHome,
   detailPost,
   suggestions,
-  socket
+  socket,
+  notifyUser
 });

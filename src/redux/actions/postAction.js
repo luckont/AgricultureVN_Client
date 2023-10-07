@@ -1,5 +1,6 @@
 import { GLOBALTYPES } from "./globalTyles";
 import { imageUpload } from "../../untils/imageUpload";
+import { createNotify, removeNotify } from "./notifyAction";
 import { deleteDataAPI, getDataAPI, postDataAPI, putDataAPI } from "../../untils/fetchData";
 
 export const POSTTYPES = {
@@ -11,7 +12,7 @@ export const POSTTYPES = {
   DELETE_POST: "DELETE_POST"
 };
 
-export const createPost = ({ content, images, auth }) => async (dispatch) => {
+export const createPost = ({ content, images, auth, socket }) => async (dispatch) => {
   let media = [];
   try {
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
@@ -29,6 +30,19 @@ export const createPost = ({ content, images, auth }) => async (dispatch) => {
     });
 
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: false } });
+
+    // Notify
+    const msg = {
+      id: res.data.newPost._id,
+      text: 'Đã thêm bài viết !',
+      recipients: res.data.newPost.user.followers,
+      url: `/post/${res.data.newPost._id}`,
+      content,
+      image: media.length > 0 ? media[0].url : ""
+    }
+
+    dispatch(createNotify({ msg, auth, socket }))
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
@@ -104,6 +118,17 @@ export const likePost = ({ post, auth, socket }) => async (dispatch) => {
   try {
     await putDataAPI(`/post/${post._id}/like`, null, auth.token);
 
+    // Notify
+    const msg = {
+      id: auth.user._id,
+      text: 'Thích bài viết của bạn !',
+      recipients: [post.user._id],
+      url: `/post/${post._id}`,
+      content: post.content, 
+      image: post.img.length > 0 ? post.img[0].url : ""
+    }
+    dispatch(createNotify({msg, auth, socket}))
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
@@ -123,6 +148,15 @@ export const unlikePost = ({ post, auth, socket }) => async (dispatch) => {
 
   try {
     await putDataAPI(`/post/${post._id}/unlike`, null, auth.token);
+
+     // Notify
+     const msg = {
+      id: auth.user._id,
+      text: 'Bỏ thích bài viết của bạn !',
+      recipients: [post.user._id],
+      url: `/post/${post._id}`,
+  }
+  dispatch(removeNotify({msg, auth, socket}))
 
   } catch (err) {
     dispatch({
@@ -144,10 +178,20 @@ export const getPost = ({ detailPost, id, auth }) => async (dispatch) => {
     }
   }
 }
-export const deletePost = ({ post, auth }) => async (dispatch) => {
+export const deletePost = ({ post, auth, socket }) => async (dispatch) => {
   dispatch({ type: POSTTYPES.DELETE_POST, payload: post })
   try {
-    await deleteDataAPI(`/post/${post._id}`, auth.token)
+    const res = await deleteDataAPI(`/post/${post._id}`, auth.token)
+    
+    // Notify
+    const msg = {
+      id: post._id,
+      text: 'Xóa bài viết !',
+      recipients: res.data.newPost.user.followers,
+      url: `/post/${post._id}`,
+    }
+    dispatch(removeNotify({ msg, auth, socket }))
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,

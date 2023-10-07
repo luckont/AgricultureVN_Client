@@ -9,6 +9,8 @@ import moment from "moment";
 
 const CardHeader = ({ post }) => {
   const auth = useSelector((state) => state.auth);
+  const socket = useSelector((state) => state.socket);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ const CardHeader = ({ post }) => {
   const handleDeletePost = () => {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa bài viết này?");
     if (confirmDelete) {
-      dispatch(deletePost({ post, auth }));
+      dispatch(deletePost({ post, auth, socket }));
       return navigate("/");
     }
   };
