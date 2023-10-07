@@ -8,11 +8,11 @@ export const PROFILE_USER = {
   FOLLOW: "FOLLOW",
   UNFOLLOW: "UNFOLLOW",
   GET_ID: "GET_USER_ID",
-  GET_POSTS: "GET_USER_POSTS"
+  GET_POSTS: "GET_USER_POSTS",
 };
 
-export const getUserProfile = ({auth, id}) => async (dispatch) => {
- dispatch({type: PROFILE_USER.GET_ID, payload: id})
+export const getUserProfile = ({ auth, id }) => async (dispatch) => {
+  dispatch({ type: PROFILE_USER.GET_ID, payload: id });
   try {
     dispatch({ type: PROFILE_USER.LOADING, payload: true });
     const res = await getDataAPI(`/user/${id}`, auth.token);
@@ -24,7 +24,7 @@ export const getUserProfile = ({auth, id}) => async (dispatch) => {
     });
     dispatch({
       type: PROFILE_USER.GET_POSTS,
-      payload: {...resPosts.data, _id: id, page: 2},
+      payload: { ...resPosts.data, _id: id, page: 2 },
     });
     dispatch({ type: PROFILE_USER.LOADING, payload: false });
   } catch (err) {
@@ -54,12 +54,11 @@ export const updateUserProfile = ({ userData, profilePicture, auth }) => async (
 
   try {
     let avatar;
-    dispatch({ type: GLOBALTYPES.NOTIFY, payload: {loading: true} });
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
 
     if (profilePicture) avatar = await imageUpload([profilePicture]);
 
-    const res = await putDataAPI(
-      `/user/${auth.user._id}`,
+    const res = await putDataAPI(`/user/${auth.user._id}`,
       {
         ...userData,
         profilePicture: profilePicture
@@ -95,14 +94,14 @@ export const updateUserProfile = ({ userData, profilePicture, auth }) => async (
   }
 };
 
-export const followUser = ({ users, user, auth }) => async (dispatch) => {
+export const followUser = ({ users, user, auth, socket }) => async (dispatch) => {
   let newUser;
   if (users.every((item) => item._id !== user._id)) {
     newUser = { ...user, followers: [...user.followers, auth.user] };
   } else {
     users.forEach((item) => {
       if (item._id === user._id) {
-        console.log(item._id)
+        console.log(item._id);
         newUser = { ...item, followers: [...item.followers, auth.user] };
       }
     });
@@ -121,11 +120,12 @@ export const followUser = ({ users, user, auth }) => async (dispatch) => {
   });
 
   try {
-    const res = await putDataAPI(`/user/${user._id}/follow`, null, auth.token);
-    dispatch({
-      type: GLOBALTYPES.NOTIFY,
-      payload: { success: res.data.msg },
-    });
+    const res = await putDataAPI(
+      `/user/${user._id}/follow`,
+      null,
+      auth.token
+    );
+    socket.emit("follow", res.data.newUser);
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
@@ -133,18 +133,24 @@ export const followUser = ({ users, user, auth }) => async (dispatch) => {
     });
   }
 };
-export const unFollowUser = ({ users, user, auth }) => async (dispatch) => {
+export const unFollowUser = ({ users, user, auth, socket }) => async (dispatch) => {
   let newUser;
 
-    if (users.every((item) => item._id !== user._id)) {
-      newUser = { ...user, followers: DeleteData(user.followers, auth.user._id) };
-    } else {
-      users.forEach((item) => {
-        if (item._id === user._id) {
-          newUser = { ...item, followers: DeleteData(item.followers, auth.user._id) };
-        }
-      });
-    }
+  if (users.every((item) => item._id !== user._id)) {
+    newUser = {
+      ...user,
+      followers: DeleteData(user.followers, auth.user._id),
+    };
+  } else {
+    users.forEach((item) => {
+      if (item._id === user._id) {
+        newUser = {
+          ...item,
+          followers: DeleteData(item.followers, auth.user._id),
+        };
+      }
+    });
+  }
 
   dispatch({
     type: PROFILE_USER.UNFOLLOW,
@@ -168,10 +174,8 @@ export const unFollowUser = ({ users, user, auth }) => async (dispatch) => {
       null,
       auth.token
     );
-    dispatch({
-      type: GLOBALTYPES.NOTIFY,
-      payload: { success: res.data.msg },
-    });
+
+    socket.emit("unFollow", res.data.newUser);
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,

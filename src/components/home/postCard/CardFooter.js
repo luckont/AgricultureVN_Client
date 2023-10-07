@@ -13,6 +13,7 @@ import { BASE_URL } from "../../../untils/config";
 
 const CardFooter = ({ post }) => {
   const auth = useSelector((state) => state.auth);
+  const socket = useSelector((state) => state.socket)
 
   const [isLike, setIsLike] = useState(false);
   const [loadLike, setLoadLike] = useState(false);
@@ -42,7 +43,7 @@ const CardFooter = ({ post }) => {
     if (loadLike) return;
     setIsLike(true);
     setLoadLike(true);
-    await dispatch(likePost({ post, auth }));
+    await dispatch(likePost({ post, auth, socket }));
     setLoadLike(false);
   };
 
@@ -50,7 +51,7 @@ const CardFooter = ({ post }) => {
     if (loadLike) return;
     setIsLike(false);
     setLoadLike(true);
-    await dispatch(unlikePost({ post, auth }));
+    await dispatch(unlikePost({ post, auth, socket }));
     setLoadLike(false);
   };
 

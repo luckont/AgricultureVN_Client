@@ -30,12 +30,12 @@ const profileUserReducer = (state = initialState, action) => {
         case PROFILE_USER.FOLLOW:
             return {
                 ...state,
-                users: EditData(state.users, action.payload._id, action.payload) 
+                users: EditData(state.users, action.payload._id, action.payload)
             };
         case PROFILE_USER.UNFOLLOW:
             return {
                 ...state,
-                users: EditData(state.users, action.payload._id, action.payload) 
+                users: EditData(state.users, action.payload._id, action.payload)
             };
         case PROFILE_USER.GET_ID:
             return {
@@ -46,6 +46,11 @@ const profileUserReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: [...state.posts, action.payload]
+            };
+        case PROFILE_USER.UPDATE_POST:
+            return {
+                ...state,
+                posts: EditData(state.posts, action.payload._id, action.payload)
             };
         default:
             return state;
