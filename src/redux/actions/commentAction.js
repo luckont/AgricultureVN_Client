@@ -1,5 +1,6 @@
 import { postDataAPI, putDataAPI, deleteDataAPI } from "../../untils/fetchData";
 import { DeleteData, EditData, GLOBALTYPES } from "./globalTyles";
+import { createNotify, removeNotify } from "./notifyAction";
 import { POSTTYPES } from "./postAction";
 
 export const createComment = ({ post, newComment, auth, socket }) => async (dispatch) => {
@@ -15,6 +16,18 @@ export const createComment = ({ post, newComment, auth, socket }) => async (disp
     dispatch({ type: POSTTYPES.UPDATE_POST, payload: newPost });
 
     socket.emit('createComment', newPost)
+
+    //Notify
+    const msg = {
+      id: res.data.newComment._id,
+      text: newComment.reply ? "Đã nhắc đến bạn trong một bình luận !" : "Đã bình luận bài viết của bạn !",
+      recipients: newComment.reply ? [newComment.tag._id] : [post.user._id],
+      url: `/post/${post._id}`,
+      content: post.content,
+      image: post.img.length > 0 ? post.img[0].url : ""
+    }
+
+    dispatch(createNotify({ msg, auth, socket }))
 
   } catch (err) {
     dispatch({
@@ -93,6 +106,15 @@ export const deleteComment = ({ post, comment, auth, socket }) => async (dispatc
   try {
     deleteArr.forEach(item => {
       deleteDataAPI(`/comment/${item._id}`, auth.token)
+      const msg = {
+        id: item._id,
+        text: comment.reply ? "Đã nhắc đến bạn trong một bình luận !" : "Đã bình luận bài viết của bạn !",
+        recipients: comment.reply ? [comment.tag._id] : [post.user._id],
+        url: `/post/${post._id}`,
+      }
+      
+      dispatch(removeNotify({ msg, auth, socket }))
+  
     })
   } catch (err) {
     dispatch({

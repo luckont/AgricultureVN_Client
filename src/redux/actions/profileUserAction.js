@@ -1,6 +1,7 @@
 import { getDataAPI, putDataAPI } from "../../untils/fetchData";
 import { imageUpload } from "../../untils/imageUpload";
 import { DeleteData, GLOBALTYPES } from "./globalTyles";
+import { createNotify, removeNotify } from "./notifyAction";
 
 export const PROFILE_USER = {
   LOADING: "LOADING_USER",
@@ -106,10 +107,7 @@ export const followUser = ({ users, user, auth, socket }) => async (dispatch) =>
       }
     });
   }
-  dispatch({
-    type: PROFILE_USER.FOLLOW,
-    payload: newUser,
-  });
+  dispatch({ type: PROFILE_USER.FOLLOW, payload: newUser });
 
   dispatch({
     type: GLOBALTYPES.AUTH,
@@ -120,12 +118,20 @@ export const followUser = ({ users, user, auth, socket }) => async (dispatch) =>
   });
 
   try {
-    const res = await putDataAPI(
-      `/user/${user._id}/follow`,
-      null,
-      auth.token
-    );
+    const res = await putDataAPI(`/user/${user._id}/follow`, null, auth.token);
+
     socket.emit("follow", res.data.newUser);
+
+    //Notify
+    const msg = {
+      id: auth.user._id,
+      text: "Bắt đầu theo dõi bạn !",
+      recipients: [newUser._id],
+      url: `/user/${auth.user._id}`
+    }
+
+    dispatch(createNotify({ msg, auth, socket }));
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
@@ -133,6 +139,7 @@ export const followUser = ({ users, user, auth, socket }) => async (dispatch) =>
     });
   }
 };
+
 export const unFollowUser = ({ users, user, auth, socket }) => async (dispatch) => {
   let newUser;
 
@@ -152,10 +159,7 @@ export const unFollowUser = ({ users, user, auth, socket }) => async (dispatch) 
     });
   }
 
-  dispatch({
-    type: PROFILE_USER.UNFOLLOW,
-    payload: newUser,
-  });
+  dispatch({ type: PROFILE_USER.UNFOLLOW, payload: newUser });
 
   dispatch({
     type: GLOBALTYPES.AUTH,
@@ -169,13 +173,20 @@ export const unFollowUser = ({ users, user, auth, socket }) => async (dispatch) 
   });
 
   try {
-    const res = await putDataAPI(
-      `/user/${user._id}/unfollow`,
-      null,
-      auth.token
-    );
+    const res = await putDataAPI(`/user/${user._id}/unfollow`, null, auth.token);
 
     socket.emit("unFollow", res.data.newUser);
+
+    //Notify
+    const msg = {
+      id: auth.user._id,
+      text: "Bắt đầu theo dõi bạn !",
+      recipients: [newUser._id],
+      url: `/user/${auth.user._id}`
+    }
+
+    dispatch(removeNotify({ msg, auth, socket }));
+
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.NOTIFY,
