@@ -20,7 +20,11 @@ const Carousel = ({ images, id }) => {
       <div className="carousel-inner">
         {images.map((image, index) => (
           <div key={index} className={`carousel-item ${isActive(index)}`}>
-            <img src={image.url} className="d-block w-100" alt={`Slide ${index + 1}`} />
+            {
+              image.url.match(/video/i)
+                ? <video controls src={image.url} className="d-block w-100" alt={image.url}/>
+                : <img src={image.url} className="d-block w-100" alt={image.url}/>
+            }
           </div>
         ))}
       </div>
@@ -29,6 +33,7 @@ const Carousel = ({ images, id }) => {
         type="button"
         data-bs-target={`#image${id}`}
         data-bs-slide="prev"
+        style={{height: "85%"}}
       >
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Previous</span>
@@ -38,6 +43,7 @@ const Carousel = ({ images, id }) => {
         type="button"
         data-bs-target={`#image${id}`}
         data-bs-slide="next"
+        style={{height: "85%"}}
       >
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
         <span className="visually-hidden">Next</span>

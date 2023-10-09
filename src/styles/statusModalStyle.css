@@ -84,6 +84,7 @@
   height: 100%;
 }
 
+.status_container .show_imgs #file_img video,
 .status_container .show_imgs #file_img img {
   display: block;
   object-fit: cover;
@@ -91,6 +92,7 @@
   height: 100%;
   max-height: 100px;
 }
+ 
 
 .status_container .show_imgs #file_img span {
   position: absolute;

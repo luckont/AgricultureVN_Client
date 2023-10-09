@@ -24,7 +24,7 @@ export const imageUpload = async (image) => {
     formData.append("folder", "image_user_AgricultureVN");
 
     const res = await fetch(
-      "https://api.cloudinary.com/v1_1/duw0njssy/image/upload",
+      "https://api.cloudinary.com/v1_1/duw0njssy/upload",
       {
         method: "POST",
         body: formData,

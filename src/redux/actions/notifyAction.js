@@ -18,7 +18,7 @@ export const createNotify = ({ msg, auth, socket }) => async (dispatch) => {
       ...res.data.notify,
       user: {
           username: auth.user.username,
-          avatar: auth.user.profilePicture
+          profilePicture: auth.user.profilePicture
       }
   })
   } catch (err) {

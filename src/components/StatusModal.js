@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
 import { createPost, updatePost } from "../redux/actions/postAction";
+import Icons from "./Icons";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
@@ -20,8 +21,8 @@ const StatusModal = () => {
 
     files.forEach((file) => {
       if (!file) return (err = "File không tồn tại !");
-      if (file.type !== "image/jpeg" && file.type !== "image/png") {
-        return (err = "Đinh dạng file không đúng !");
+      if (file.size > 1024 * 1024 * 5) {
+        return (err = "Dung lượng file quá lớn !");
       }
 
       return newImgs.push(file);
@@ -40,23 +41,29 @@ const StatusModal = () => {
     e.preventDefault();
     if (status.onEdit) {
       dispatch(updatePost({ content, images, auth, status }));
-
     } else {
       dispatch(createPost({ content, images, auth, socket }));
-
     }
 
     setContent("");
     setImages([]);
-    dispatch({ type: GLOBALTYPES.STATUS, payload: false })
+    dispatch({ type: GLOBALTYPES.STATUS, payload: false });
+  };
+
+  const imageShow = (src) => {
+    return <img src={src} alt="images" className="img-thumbnail" />;
+  };
+
+  const videoShow = (src) => {
+    return <video controls src={src} alt="images" className="img-thumbnail" />;
   };
 
   useEffect(() => {
     if (status.onEdit) {
-      setContent(status.desc)
-      setImages(status.img)
+      setContent(status.desc);
+      setImages(status.img);
     }
-  }, [status])
+  }, [status]);
 
   return (
     <div className="status_modal">
@@ -75,16 +82,31 @@ const StatusModal = () => {
         <div className="status_container">
           <textarea
             name="content"
+            value={content}
             placeholder={`${auth.user.username}, Bạn đang nghĩ gì ?`}
             onChange={(e) => setContent(e.target.value)}
           />
+          <div className="d-flex">
+            <div className="flex-fill"></div>
+            <Icons setContent={setContent} content={content}/>
+          </div>
           <div className="show_imgs">
             {images.map((img, index) => (
-              <div key={index} id="file_img" className="img-thumbnail">
-                <img src={
-                  img.url
-                    ? img.url
-                    : URL.createObjectURL(img)} alt="images" />
+              <div key={index} id="file_img">
+                {img.url ? (
+                  <>
+                    {img.url.match(/video/i)
+                      ? videoShow(img.url)
+                      : imageShow(img.url)}
+                  </>
+                ) : (
+                  <>
+                    {img.type.match(/video/i)
+                      ? videoShow(URL.createObjectURL(img))
+                      : imageShow(URL.createObjectURL(img))}
+                  </>
+                )}
+
                 <span onClick={() => delImage(index)}>&times;</span>
               </div>
             ))}
@@ -98,7 +120,7 @@ const StatusModal = () => {
                 name="file"
                 id="file"
                 multiple
-                accept="image/*"
+                accept="image/*, video/*"
                 onChange={handlleChangeImages}
               />
             </div>

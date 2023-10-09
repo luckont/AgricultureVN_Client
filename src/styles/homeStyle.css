@@ -56,10 +56,12 @@
     height: 400px;
 }
 
+.posts .carousel-inner video,
 .posts .carousel-inner img{
     height: 400px;
     object-fit: contain;
 }
+
 
 /* Card footer */
 .posts .card_icon_menu {

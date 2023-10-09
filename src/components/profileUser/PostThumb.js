@@ -8,9 +8,13 @@ const PostThumb = ({ posts, result }) => {
   return (
     <div className="post_thumb">
       {posts.map((post) => (
-        <Link key={post._id} to={`/post/${post._id}`}>
+        <Link key={post._id} to={`/post/${post._id}`} style={{textDecoration: "none"}}>
           <div className="post_thumb_display">
-            <img src={post.img[0].url} alt={post.img[0].url} />
+            {
+            post.img.length > 0 
+              ? <img src={post.img[0].url} alt={post.img[0].url} /> 
+              : <div className="p-4">{post.desc}</div>
+            }
             <div className="post_thumb_menu">
               <i className="fa-solid fa-heart">{post.like.length}</i>
               <i className="fa-solid fa-comment">{post.comments.length}</i>

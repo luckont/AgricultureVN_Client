@@ -78,8 +78,7 @@ const CardHeader = ({ post }) => {
             </>
           )}
           <div className="dropdown-item" onClick={handleCopyLink}>
-            <span className="material-symbols-outlined">share</span> Chia sẻ bài
-            viết
+            <span className="material-symbols-outlined">share</span> Sao chép liên kết
           </div>
         </div>
       </div>
