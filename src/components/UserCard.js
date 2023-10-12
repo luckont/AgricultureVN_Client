@@ -9,6 +9,7 @@ const UserCard = ({
   handleClose,
   setShowFollowers,
   setShowSubscribers,
+  msg
 }) => {
   const handleCloseAll = () => {
     if (handleClose) handleClose();
@@ -23,11 +24,26 @@ const UserCard = ({
           to={`/user/${user._id}`}
           onClick={handleCloseAll}
           className="d-flex align-items-center"
-          style={{ textDecoration: "none" }}
+          style={{ textDecoration: "none", color: "#000" }}
         >
           <Avatar src={user.profilePicture} size="medium-avatar" />
-          <div>
-            <small className="m-2">{user.username}</small>
+          <div className="px-2">
+            <small className="fw-bold">{user.username}</small>
+            <small className="d-flex">
+              {
+                msg
+                ? user.text && <>
+                  <div>{user.text.length > 10 ? user.text.slice(0, 10) + "..." : user.text}</div>
+                  {
+                    user.media?.length > 0 &&
+                    <div style={{paddingLeft: "20px"}}>
+                      {user.media.length} <i className="fas fa-image" ></i>
+                    </div>
+                  }
+                </>
+                : ""
+              }
+            </small>
           </div>
         </Link>
       </div>

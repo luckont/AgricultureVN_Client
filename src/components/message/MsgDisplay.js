@@ -1,25 +1,49 @@
 import React from "react";
 import Avatar from "../Avatar";
+import { imageShow, videoShow } from "../../untils/mediaShow";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteMessages } from "../../redux/actions/messageAction";
 
-const MsgDisplay = ({ user }) => {
+const MsgDisplay = ({ user, msg, data }) => {
+  
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
+
+  const handleDeleteMessages = () => {
+    if(data){
+      dispatch(deleteMessages({msg, data, auth}))
+    }
+  }
+
   return (
     <>
       <div className="chat_title">
         <Avatar src={user.profilePicture} size="small-avatar" />
-        <span style={{paddingLeft: "5px"}}>{user.username}</span>
+        <span style={{ paddingLeft: "5px" }}>{user.username}</span>
       </div>
-      <div className="chat_text">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged. It was popularised in the 1960s with the release
-        of Letraset sheets containing Lorem Ipsum passages, and more recently
-        with desktop publishing software like Aldus PageMaker including versions
-        of Lorem Ipsum
+      <div className="you_content">
+        {user._id === auth.user._id && <i className="fa-solid fa-trash text-danger" onClick={handleDeleteMessages}></i>}
+        <div>
+          {
+            msg.text &&
+            <div className="chat_text">
+              {msg.text}
+            </div>
+          }
+          {
+            msg.media.map((item, index) => (
+              <div key={index}>
+                {
+                  item.url.match(/video/i)
+                    ? videoShow(item.url)
+                    : imageShow(item.url)
+                }
+              </div>
+            ))
+          }
+        </div>
       </div>
-      <div className="chat_time">today</div>
+      <div className="chat_time">{new Date(msg.createdAt).toLocaleString()}</div>
     </>
   );
 };

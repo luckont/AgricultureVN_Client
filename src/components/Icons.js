@@ -9,7 +9,6 @@ const Icons = ({setContent, content}) => {
   return (
     <li
       className="nav-item dropdown align-items-center d-flex"
-      style={{ padding: "0 15px" }}
     >
       <span
         className="nav-link position-relative"

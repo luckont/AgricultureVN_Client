@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
 import { createPost, updatePost } from "../redux/actions/postAction";
 import Icons from "./Icons";
+import { imageShow, videoShow } from "../untils/mediaShow"
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
@@ -50,14 +51,6 @@ const StatusModal = () => {
     dispatch({ type: GLOBALTYPES.STATUS, payload: false });
   };
 
-  const imageShow = (src) => {
-    return <img src={src} alt="images" className="img-thumbnail" />;
-  };
-
-  const videoShow = (src) => {
-    return <video controls src={src} alt="images" className="img-thumbnail" />;
-  };
-
   useEffect(() => {
     if (status.onEdit) {
       setContent(status.desc);
@@ -88,7 +81,7 @@ const StatusModal = () => {
           />
           <div className="d-flex">
             <div className="flex-fill"></div>
-            <Icons setContent={setContent} content={content}/>
+            <Icons setContent={setContent} content={content} />
           </div>
           <div className="show_imgs">
             {images.map((img, index) => (

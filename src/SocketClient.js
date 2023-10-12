@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { POSTTYPES } from "./redux/actions/postAction";
 import { GLOBALTYPES } from "./redux/actions/globalTyles";
 import { NOTIFY_TYPES } from "./redux/actions/notifyAction";
+import { MESS_TYPES } from "./redux/actions/messageAction";
 
 const spawnNotification = (body, icon, url, title) => {
   let options = {
@@ -20,7 +21,7 @@ const spawnNotification = (body, icon, url, title) => {
 const SocketClient = () => {
   const auth = useSelector((state) => state.auth);
   const socket = useSelector((state) => state.socket);
-  const notify = useSelector((state) => state.notifyUser);
+  // const notify = useSelector((state) => state.notifyUser);
 
   const dispatch = useDispatch();
 
@@ -101,6 +102,24 @@ const SocketClient = () => {
     });
 
     return () => socket.off("removeNotifyToClient");
+  }, [socket, dispatch]);
+
+  // Message
+  useEffect(() => {
+    socket.on("addMessageToClient", (msg) => {
+      dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg });
+
+      dispatch({
+        type: MESS_TYPES.ADD_USER,
+        payload: {
+          ...msg.user,
+          text: msg.text,
+          media: msg.media,
+        },
+      });
+    });
+
+    return () => socket.off("addMessageToClient");
   }, [socket, dispatch]);
   return <></>;
 };
