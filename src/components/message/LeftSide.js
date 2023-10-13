@@ -3,30 +3,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import { getDataAPI } from "../../untils/fetchData";
-import { addUser, getConversations } from "../../redux/actions/messageAction";
+import { MESS_TYPES, getConversations } from "../../redux/actions/messageAction";
 import UserCard from "../UserCard";
 
 const LeftSide = () => {
   const auth = useSelector((state) => state.auth);
   const message = useSelector((state) => state.message);
+  const online = useSelector((state) => state.online);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id }  = useParams();
+  const { id } = useParams();
 
   const [search, setSearch] = useState("");
   const [searchUsers, setSearchUsers] = useState([]);
   const [loadUsers, setloadUsers] = useState(false);
 
   const isActive = (user) => {
-    if(id === user._id) return "active"
+    if (id === user._id) return "active"
     return ""
   }
 
   const handleAddUser = (user) => {
     setSearch("");
     setSearchUsers([]);
-    dispatch(addUser({ user, message }));
+    dispatch({ type: MESS_TYPES.ADD_USER, payload: { ...user, text: "", media: [] } });
+    dispatch({ type: MESS_TYPES.CHECK_ONLINE, payload: online })
     return navigate(`/message/${user._id}`);
   };
 
@@ -61,9 +63,13 @@ const LeftSide = () => {
   };
 
   useEffect(() => {
-    if(message.firstLoad) return;
-    dispatch(getConversations({auth}))
-  },[auth, dispatch, message.firstLoad])
+    if (message.firstLoad) return;
+    dispatch(getConversations({ auth }))
+  }, [auth, dispatch, message.firstLoad])
+
+  useEffect(() => {
+    if (message.firstLoad) dispatch({ type: MESS_TYPES.CHECK_ONLINE, payload: online })
+  }, [dispatch, message.firstLoad, online]);
 
   return (
     <>
@@ -100,7 +106,17 @@ const LeftSide = () => {
                 className={`message_user ${isActive(user)}`}
                 onClick={() => handleAddUser(user)}
               >
-                <UserCard user={user} msg={true} />
+                <div className="d-flex align-items-center">
+                  <UserCard user={user} msg={true} />
+                  {auth.user.subscribes.find(item => item._id === user._id)
+                    ?
+                    (user.online
+                      ? <i class="fa-solid fa-user-group text-success" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
+                      : <i class="fa-solid fa-user-group" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
+                    )
+                    : ""
+                  }
+                </div>
               </div>
             ))}
           </>

@@ -19,7 +19,6 @@ const messageReducer = (state = initialState, action) => {
             }
             return state;
         case MESS_TYPES.ADD_MESSAGE:
-            console.log(action.payload)
             return {
                 ...state,
                 data: state.data.map(item =>
@@ -73,6 +72,15 @@ const messageReducer = (state = initialState, action) => {
                 users: DeleteData(state.users, action.payload),
                 data: DeleteData(state.data, action.payload)
             };
+        case MESS_TYPES.CHECK_ONLINE:
+            return {
+                ...state,
+                users: state.users.map(user =>
+                    action.payload.includes(user._id)
+                        ? { ...user, online: true }
+                        : { ...user, online: false }
+                )
+            }
         default:
             return state;
     }

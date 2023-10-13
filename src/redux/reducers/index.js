@@ -10,6 +10,7 @@ import suggestions from "./suggestionReducer";
 import socket from "./socketReducer";
 import notifyUser from "./notifyUserReducer";
 import message from "./messageReducer";
+import online from "./onlineReducer";
 
 export default combineReducers({
   auth,
@@ -22,5 +23,6 @@ export default combineReducers({
   suggestions,
   socket,
   notifyUser,
-  message
+  message,
+  online
 });

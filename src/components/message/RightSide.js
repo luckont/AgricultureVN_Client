@@ -4,7 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import { imageShow, videoShow } from "../../untils/mediaShow";
 import { imageUpload } from "../../untils/imageUpload";
-import { addMessage, getMessages, loadMoreMessages, deleteConversation } from "../../redux/actions/messageAction";
+import {
+  addMessage,
+  getMessages,
+  loadMoreMessages,
+  deleteConversation,
+} from "../../redux/actions/messageAction";
 import UserCard from "../UserCard";
 import MsgDisplay from "./MsgDisplay";
 import Icons from "../Icons";
@@ -28,7 +33,6 @@ const RightSide = () => {
   const [result, setResult] = useState(9);
   const [page, setPage] = useState(0);
   const [isLoadMore, setIsLoadMore] = useState(0);
-
 
   const handleChangeMedia = (e) => {
     const files = [...e.target.files];
@@ -72,85 +76,101 @@ const RightSide = () => {
     setLoadMedia(false);
     await dispatch(addMessage({ msg, auth, socket }));
     if (refDisplay.current) {
-      refDisplay.current.scrollIntoView({ behavior: "smooth", block: "end" })
+      refDisplay.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   };
 
   const handleDeleteConversation = () => {
-    if(window.confirm('Do you want to delete?')){
-        dispatch(deleteConversation({auth, id}))
-        return navigate('/message')
+    if (window.confirm("Bạn có muốn xóa đoạn hội thoại này ?")) {
+      dispatch(deleteConversation({ auth, id }));
+      return navigate("/message");
     }
-}
+  };
 
   useEffect(() => {
-    const newData = message.data.find(item => item._id === id)
+    const newData = message.data.find((item) => item._id === id);
     if (newData) {
-      setData(newData.messages)
-      setResult(newData.result)
-      setPage(newData.page)
+      setData(newData.messages);
+      setResult(newData.result);
+      setPage(newData.page);
     }
   }, [id, message.data]);
 
   useEffect(() => {
     if (id && message.users.length > 0) {
       setTimeout(() => {
-        refDisplay.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      }, 50)
+        refDisplay.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 50);
 
-      const newUser = message.users.find(user => user._id === id)
-      if (newUser) setUser(newUser)
+      const newUser = message.users.find((user) => user._id === id);
+      if (newUser) setUser(newUser);
     }
-  }, [message.users, id])
+  }, [message.users, id]);
 
   useEffect(() => {
     const getMessagesData = async () => {
-      if (message.data.every(item => item._id !== id)) {
-        await dispatch(getMessages({ auth, id }))
+      if (message.data.every((item) => item._id !== id)) {
+        await dispatch(getMessages({ auth, id }));
         setTimeout(() => {
-          refDisplay.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
-        }, 50)
+          refDisplay.current.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+          });
+        }, 50);
       }
-    }
-    getMessagesData()
-  }, [id, dispatch, auth, message.data])
-
+    };
+    getMessagesData();
+  }, [id, dispatch, auth, message.data]);
 
   // Load More
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        setIsLoadMore(p => p + 1)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsLoadMore((p) => p + 1);
+        }
+      },
+      {
+        threshold: 0.1,
       }
-    }, {
-      threshold: 0.1
-    })
-    observer.observe(pageEnd.current)
-  }, [setIsLoadMore])
+    );
+    observer.observe(pageEnd.current);
+  }, [setIsLoadMore]);
 
   useEffect(() => {
     if (isLoadMore > 1) {
       if (result >= page * 9) {
-        dispatch(loadMoreMessages({ auth, id, page: page + 1}))
-        setIsLoadMore(1)
+        dispatch(loadMoreMessages({ auth, id, page: page + 1 }));
+        setIsLoadMore(1);
       }
     }
-  }, [auth, dispatch, id, isLoadMore, page, result])
+  }, [auth, dispatch, id, isLoadMore, page, result]);
 
   return (
     <>
       <div className="message_header">
-        {user.length !== 0 && 
-        <UserCard user={user}> 
-          <i className="fa-solid fa-trash text-danger" onClick={handleDeleteConversation}></i>
-        </UserCard>}
+        {user.length !== 0 && (
+          <>
+            <UserCard user={user} />
+            <i
+              className="fa-solid fa-trash text-danger"
+              onClick={handleDeleteConversation}
+              style={{cursor: "pointer", marginLeft: "auto", paddingRight: "10px"}}
+            ></i>
+          </>
+
+        )}
       </div>
       <div
         className="chat_container"
         style={{ height: media.length > 0 ? "calc(100% - 155px)" : "" }}
       >
         <div className="chat_display" ref={refDisplay}>
-          <button className="btn btn-secondary" style={{ marginTop: "-30px" }} ref={pageEnd}>
+          <button
+            className="btn btn-secondary"
+            style={{ marginTop: "-30px", display: "none" }}
+            ref={pageEnd}
+          >
             Xem thêm
           </button>
           {data.map((msg, index) => (
@@ -162,7 +182,7 @@ const RightSide = () => {
               )}
               {msg.sender === auth.user._id && (
                 <div className="chat_row you_message">
-                  <MsgDisplay user={auth.user} msg={msg} data={data}/>
+                  <MsgDisplay user={auth.user} msg={msg} data={data} />
                 </div>
               )}
             </div>

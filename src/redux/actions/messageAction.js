@@ -9,12 +9,7 @@ export const MESS_TYPES = {
     UPDATE_MESSAGES: 'UPDATE_MESSAGES',
     DELETE_MESSAGES: "DELETE_MESSAGES",
     DELETE_CONVERSATION: 'DELETE_CONVERSATION',
-}
-
-export const addUser = ({ user, message }) => (dispatch) => {
-    if (message.users.every(item => item._id !== user._id)) {
-        dispatch({ type: MESS_TYPES.ADD_USER, payload: { ...user, text: "", media: [] } });
-    }
+    CHECK_ONLINE: "CHECK_ONLINE"
 }
 
 export const addMessage = ({ msg, auth, socket }) => async (dispatch) => {

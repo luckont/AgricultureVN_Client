@@ -5,30 +5,17 @@ import { GLOBALTYPES } from "./redux/actions/globalTyles";
 import { NOTIFY_TYPES } from "./redux/actions/notifyAction";
 import { MESS_TYPES } from "./redux/actions/messageAction";
 
-const spawnNotification = (body, icon, url, title) => {
-  let options = {
-    body,
-    icon,
-  };
-  let n = new Notification(title, options);
-
-  n.onclick = (e) => {
-    e.preventDefault();
-    window.open(url, "_blank");
-  };
-};
-
 const SocketClient = () => {
   const auth = useSelector((state) => state.auth);
   const socket = useSelector((state) => state.socket);
-  // const notify = useSelector((state) => state.notifyUser);
+  const online = useSelector((state) => state.online);
 
   const dispatch = useDispatch();
 
   //connect user
   useEffect(() => {
-    socket.emit("joinUser", auth.user._id);
-  }, [auth.user._id, socket]);
+    socket.emit("joinUser", auth.user);
+  }, [auth.user, socket]);
 
   // like and unlike
   useEffect(() => {
@@ -83,14 +70,6 @@ const SocketClient = () => {
   useEffect(() => {
     socket.on("createNotifyToClient", (msg) => {
       dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg });
-
-      //notify window
-      spawnNotification(
-        msg.user.username + " " + msg.text,
-        msg.user.avatar,
-        msg.url,
-        "Nông Nghiệp Việt Nam"
-      );
     });
 
     return () => socket.off("createNotifyToClient");
@@ -120,6 +99,41 @@ const SocketClient = () => {
     });
 
     return () => socket.off("addMessageToClient");
+  }, [socket, dispatch]);
+
+  //Online / Offline
+  useEffect(() => {
+    socket.emit("checkUserOnline", auth.user);
+  }, [auth.user, socket]);
+
+  useEffect(() => {
+    socket.emit("checkUserOnlineToMe", (data) => {
+      data.forEach((item) => {
+        if (!online.includes(item.id)) {
+          dispatch({ type: GLOBALTYPES.ONLINE, payload: item.id });
+        }
+      });
+    });
+    return () => socket.off("checkUserOnlineToMe");
+  }, [dispatch, online, socket]);
+
+  useEffect(() => {
+    socket.on("checkUserOnlineToClient", (id) => {
+      if (!online.includes(id)) {
+        dispatch({ type: GLOBALTYPES.ONLINE, payload: id });
+      }
+    });
+
+    return () => socket.off("checkUserOnlineToClient");
+  }, [socket, dispatch, online]);
+
+  // Check User Offline
+  useEffect(() => {
+    socket.on("CheckUserOffline", (id) => {
+      dispatch({ type: GLOBALTYPES.OFFLINE, payload: id });
+    });
+
+    return () => socket.off("CheckUserOffline");
   }, [socket, dispatch]);
   return <></>;
 };
