@@ -49,6 +49,7 @@ const CardHeader = ({ post }) => {
             >
               {post.user.username}
             </Link>
+            { post.user.roles === "expert" && <i className="fa-solid fa-circle-check text-success" style={{fontSize: "10px", paddingLeft: "5px"}}></i>}
           </h6>
           <p className="m-0 text-muted" style={{ fontSize: "0.7rem" }}>
             {moment(post.createdAt).fromNow()}

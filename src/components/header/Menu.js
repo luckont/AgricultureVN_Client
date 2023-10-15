@@ -19,12 +19,15 @@ const Menu = () => {
   };
 
   const navLinks = [
+    { label: "Nổi bật", icon: "feed", path: "/news" },
     { label: "Trang chủ", icon: "home", path: "/" },
     { label: "Tin nhắn", icon: "send", path: "/message" },
+
   ];
   return (
     <div className="menu">
       <ul className="navbar-nav flex-row">
+        {/* Icons  */}
         {navLinks.map((link, index) => (
           <li className="nav-item" key={index}>
             <Link className={`nav-link ${isActive(link.path)}`} to={link.path}>
@@ -33,6 +36,7 @@ const Menu = () => {
           </li>
         ))}
 
+        {/* Notify */}
         <li className="nav-item dropdown align-items-center d-flex" style={{padding: "0 15px"}}>
           <span
             className="nav-link position-relative"
@@ -52,7 +56,7 @@ const Menu = () => {
             <NotifyModal />
           </div>
         </li>
-
+        {/* User dropdown  */}
         <li className="nav-item dropdown" style={{paddingLeft: "15px"}}>
           <span
             className="nav-link position-relative"

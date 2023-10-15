@@ -5,7 +5,7 @@ import FollowBtn from "./FollowBtn";
 import Follower from "./Follower";
 import Subscriber from "./Subscriber";
 
-const Infor = ({id, auth, profile, dispatch}) => {
+const Infor = ({ id, auth, profile, dispatch }) => {
   const [userData, setUserData] = useState([]);
   const [onEdit, setOnEdit] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -27,7 +27,10 @@ const Infor = ({id, auth, profile, dispatch}) => {
           <Avatar src={user.profilePicture} size="very-big-avatar" />
           <div className="infor_content">
             <div className="title_content">
-              <h1>{user.username}</h1>
+              <div className="user_name d-flex align-items-center">
+                <h1 style={{fontWeight: "bold"}}>{user.username}</h1>
+               { user.roles === "expert" && <i className="fa-solid fa-circle-check text-success" style={{fontSize: "20px", paddingLeft: "10px"}}></i>}
+              </div>
               {user._id === auth.user._id ? (
                 <button
                   className="btn btn-outline-primary"
@@ -40,15 +43,29 @@ const Infor = ({id, auth, profile, dispatch}) => {
               )}
             </div>
             <div className="sub_follower">
-              <span onClick={() => setShowFollowers(true)}>{user.followers.length} Người theo dõi</span>
+              <span onClick={() => setShowFollowers(true)}>
+                {user.followers.length} Người theo dõi
+              </span>
               <br />
-              <span onClick={() => setShowSubscribers(true)}>{user.subscribes.length} Đang theo dõi</span>
+              <span onClick={() => setShowSubscribers(true)}>
+                {user.subscribes.length} Đang theo dõi
+              </span>
             </div>
             <p>{user.desc}</p>
           </div>
           {onEdit && <EditProfile user={user} setOnEdit={setOnEdit} />}
-          {showFollowers && <Follower users={user.followers} setShowFollowers={setShowFollowers}/>}
-          {showSubscribers && <Subscriber users={user.subscribes} setShowSubscribers={setShowSubscribers}/>}
+          {showFollowers && (
+            <Follower
+              users={user.followers}
+              setShowFollowers={setShowFollowers}
+            />
+          )}
+          {showSubscribers && (
+            <Subscriber
+              users={user.subscribes}
+              setShowSubscribers={setShowSubscribers}
+            />
+          )}
         </div>
       ))}
     </div>

@@ -23,11 +23,11 @@
     align-items: center;
     flex-wrap: wrap;
  }
- .title_content h1 {
+ .title_content .user_name {
     font-size: 2rem;
     font-weight: 400;
     transform: translateY(4px);
-    flex: 3;
+    flex: 4;
  }
 .title_content button {
     flex: 2;

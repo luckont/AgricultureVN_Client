@@ -29,6 +29,7 @@ const UserCard = ({
           <Avatar src={user.profilePicture} size="medium-avatar" />
           <div className="px-2">
             <small className="fw-bold">{user.username}</small>
+            { user.roles === "expert" && <i className="fa-solid fa-circle-check text-success" style={{fontSize: "10px", paddingLeft: "5px"}}></i>}
             <small className="d-flex">
               {
                 msg
