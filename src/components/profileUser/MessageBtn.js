@@ -1,0 +1,27 @@
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { MESS_TYPES } from "../../redux/actions/messageAction";
+
+const MessageBtn = ({ user }) => {
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleMessage = (user) => {
+        dispatch({ type: MESS_TYPES.ADD_USER, payload: { ...user, text: "", media: [] } });
+        navigate(`/message/${user._id}`)
+    };
+    
+    return (
+        <div>
+            <button className="btn btn-primary"
+                onClick={() => handleMessage(user)}
+                style={{ marginLeft: "20px" }}>
+                Nhắn tin
+            </button>
+        </div>
+    );
+};
+
+export default MessageBtn;

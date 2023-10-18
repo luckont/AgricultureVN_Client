@@ -4,6 +4,7 @@ import EditProfile from "./EditProfile";
 import FollowBtn from "./FollowBtn";
 import Follower from "./Follower";
 import Subscriber from "./Subscriber";
+import MessageBtn from "./MessageBtn";
 
 const Infor = ({ id, auth, profile, dispatch }) => {
   const [userData, setUserData] = useState([]);
@@ -28,19 +29,14 @@ const Infor = ({ id, auth, profile, dispatch }) => {
           <div className="infor_content">
             <div className="title_content">
               <div className="user_name d-flex align-items-center">
-                <h1 style={{fontWeight: "bold"}}>{user.username}</h1>
-               { user.roles === "expert" && <i className="fa-solid fa-circle-check text-success" style={{fontSize: "20px", paddingLeft: "10px"}}></i>}
+                <h3 style={{ fontWeight: "bold" }}>{user.username}</h3>
+                {user.roles === "expert" && (
+                  <i
+                    className="fa-solid fa-circle-check text-success"
+                    style={{ fontSize: "20px", paddingLeft: "10px" }}
+                  ></i>
+                )}
               </div>
-              {user._id === auth.user._id ? (
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() => setOnEdit(true)}
-                >
-                  Cập nhật
-                </button>
-              ) : (
-                <FollowBtn user={user} />
-              )}
             </div>
             <div className="sub_follower">
               <span onClick={() => setShowFollowers(true)}>
@@ -52,6 +48,19 @@ const Infor = ({ id, auth, profile, dispatch }) => {
               </span>
             </div>
             <p>{user.desc}</p>
+            {user._id === auth.user._id ? (
+              <button
+                className="btn btn-outline-primary"
+                onClick={() => setOnEdit(true)}
+              >
+                Cập nhật
+              </button>
+            ) : (
+              <div className="d-flex">
+              <FollowBtn user={user} />
+              <MessageBtn user={user} />
+              </div>
+            )}
           </div>
           {onEdit && <EditProfile user={user} setOnEdit={setOnEdit} />}
           {showFollowers && (

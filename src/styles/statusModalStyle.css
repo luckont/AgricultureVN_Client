@@ -54,6 +54,13 @@
   cursor: pointer;
 }
 
+.status_container .hastag_box{
+  outline: none;
+  border: none;
+  font-size: 12px;
+  width: 80%;
+}
+
 .status_container .file_upload {
   overflow: hidden;
   margin: 0 10px;

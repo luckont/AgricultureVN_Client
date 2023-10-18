@@ -11,6 +11,7 @@ import socket from "./socketReducer";
 import notifyUser from "./notifyUserReducer";
 import message from "./messageReducer";
 import online from "./onlineReducer";
+import newsPost from "./newsPostReducer";
 
 export default combineReducers({
   auth,
@@ -24,5 +25,6 @@ export default combineReducers({
   socket,
   notifyUser,
   message,
-  online
+  online,
+  newsPost
 });

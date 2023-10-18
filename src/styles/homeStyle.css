@@ -52,6 +52,13 @@
     color: #5e5e5e;
 }
 
+.posts .card_body small {
+    padding-left: 25px;
+    font-style: italic;
+    font-size: 12px;
+    color: #adadad;
+}
+
 .posts .carousel-inner {
     height: 400px;
 }
@@ -62,7 +69,9 @@
     object-fit: contain;
 }
 
-
+.posts .card_body .content span {
+    white-space: pre-line;
+}
 /* Card footer */
 .posts .card_icon_menu {
     display: flex;

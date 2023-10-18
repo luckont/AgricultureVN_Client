@@ -20,7 +20,7 @@ const RightSideBar = () => {
         <p>Loading ...</p>
       ) : (
         <div className="suggestions">
-          {suggestions.users.map((user) => (
+          {suggestions.users.slice(0, 5).map((user) => (
             <UserCard key={user._id} user={user}>
               <FollowBtn user={user} />
             </UserCard>

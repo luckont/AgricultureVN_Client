@@ -6,21 +6,22 @@ import { deleteDataAPI, getDataAPI, postDataAPI, putDataAPI } from "../../untils
 export const POSTTYPES = {
   CREATE_POST: "CREATE_POST",
   LOADING_POST: "LOADING_POST",
+  LOADING_NEWS_POST: "LOADING_NEWS_POST",
   GET_POSTS: "GET_POSTS",
   UPDATE_POST: "UPDATE_POST",
   GET_POST: "GET_POST",
-  DELETE_POST: "DELETE_POST"
+  DELETE_POST: "DELETE_POST",
+  NEWS_POST: "NEWS_POST"
 };
 
-export const createPost = ({ content, images, auth, socket }) => async (dispatch) => {
+export const createPost = ({ content, hashtag, images, auth, socket }) => async (dispatch) => {
   let media = [];
   try {
     dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
     if (images.length > 0) media = await imageUpload(images);
-    console.log(media)
     const res = await postDataAPI(
       "post",
-      { desc: content, img: media },
+      { desc: content, img: media, hashtag },
       auth.token
     );
 
@@ -70,7 +71,26 @@ export const getPosts = (token) => async (dispatch) => {
   }
 };
 
-export const updatePost = ({ content, images, auth, status }) => async (dispatch) => {
+export const getNewsPosts = (token) => async (dispatch) => {
+  try {
+    dispatch({ type: POSTTYPES.LOADING_NEWS_POST, payload: true });
+
+    const res = await getDataAPI("/post/news/result", token);
+    dispatch({
+      type: POSTTYPES.NEWS_POST,
+      payload: { ...res.data },
+    });
+    dispatch({ type: POSTTYPES.LOADING_NEWS_POST, payload: false });
+
+  } catch (err) {
+    dispatch({
+      type: GLOBALTYPES.NOTIFY,
+      payload: { err: err.response.data.msg },
+    });
+  }
+};
+
+export const updatePost = ({ content, hashtag, images, auth, status }) => async (dispatch) => {
   let media = [];
   const newImgUrl = images.filter((img) => !img.url);
   const oldImgUrl = images.filter((img) => img.url);
@@ -91,6 +111,7 @@ export const updatePost = ({ content, images, auth, status }) => async (dispatch
       {
         desc: content,
         img: [...oldImgUrl, ...media],
+        hashtag
       },
       auth.token
     );
@@ -165,6 +186,7 @@ export const unlikePost = ({ post, auth, socket }) => async (dispatch) => {
     });
   }
 };
+
 export const getPost = ({ detailPost, id, auth }) => async (dispatch) => {
   if (detailPost.every(post => post._id !== id)) {
     try {
@@ -177,7 +199,8 @@ export const getPost = ({ detailPost, id, auth }) => async (dispatch) => {
       });
     }
   }
-}
+};
+
 export const deletePost = ({ post, auth, socket }) => async (dispatch) => {
   dispatch({ type: POSTTYPES.DELETE_POST, payload: post })
   try {
@@ -198,7 +221,8 @@ export const deletePost = ({ post, auth, socket }) => async (dispatch) => {
       payload: { err: err.response.data.msg },
     });
   }
-}
+};
+
 export const savePost = ({ post, auth }) => async (dispatch) => {
   const newUser = { ...auth.user, saved: [...auth.user.saved, post._id] }
   dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
@@ -210,7 +234,8 @@ export const savePost = ({ post, auth }) => async (dispatch) => {
       payload: { err: err.response.data.msg },
     });
   }
-}
+};
+
 export const unSavePost = ({ post, auth }) => async (dispatch) => {
   const newUser = { ...auth.user, saved: auth.user.saved.filter(id => id !== post._id) }
   dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
@@ -223,4 +248,4 @@ export const unSavePost = ({ post, auth }) => async (dispatch) => {
       payload: { err: err.response.data.msg },
     })
   }
-}
+};

@@ -22,6 +22,7 @@ const CardBody = ({ post }) => {
                     </span>
                 }
             </div>
+            <small>{post.hashtag}</small>
             {
                 post.img.length > 0 && <Carousel images={post.img} id={post._id} />
             }

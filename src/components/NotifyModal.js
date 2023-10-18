@@ -39,7 +39,7 @@ const NotifyModal = () => {
         )}
       </div>
       <hr className="mt-0" />
-      {notify.data.length === 0 && <h5>Không có thông báo mới !</h5>}
+      {notify.data.length === 0 && <h5 style={{paddingLeft: "10px"}}>Không có thông báo mới !</h5>}
       <div style={{ maxHeight: "calc(100vh - 200px)", overflow: "auto" }}>
         {notify.data.map((msg, index) => (
           <div key={index} className="px-2 mb-3">
@@ -71,7 +71,7 @@ const NotifyModal = () => {
         ))}
       </div>
       <hr className="my-1" />
-      <div className="text-right text-danger mr-2" style={{ cursor: 'pointer' }} onClick={handleDeleteAll}>
+      <div className="text-right text-danger" style={{ cursor: 'pointer', paddingLeft: "10px" }} onClick={handleDeleteAll}>
         Xóa tất cả
       </div>
     </div>

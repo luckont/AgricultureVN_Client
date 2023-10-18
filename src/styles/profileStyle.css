@@ -8,21 +8,15 @@
 .infor_user {
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
  .infor_content {
-    min-width: 250px;
     max-width: 400px;
     width: 100%;
     flex: 1;
     margin: 0 15px;
  }
 
- .title_content {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
- }
  .title_content .user_name {
     font-size: 2rem;
     font-weight: 400;

@@ -70,3 +70,6 @@ img {
 
 /* Icons style */
 @import url("./iconsStyle.css");
+
+/* News style  */
+@import url("./newsStyle.css");
