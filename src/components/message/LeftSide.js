@@ -111,8 +111,8 @@ const LeftSide = () => {
                   {auth.user.subscribes.find(item => item._id === user._id)
                     ?
                     (user.online
-                      ? <i class="fa-solid fa-user-group text-success" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
-                      : <i class="fa-solid fa-user-group" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
+                      ? <i className="fa-solid fa-user-group text-success" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
+                      : <i className="fa-solid fa-user-group" style={{ marginLeft: "auto", paddingRight: "10px", opacity: "0.5" }}></i>
                     )
                     : ""
                   }

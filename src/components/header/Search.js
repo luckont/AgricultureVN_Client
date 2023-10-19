@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDataAPI } from "../../untils/fetchData";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import UserCard from "../UserCard";
+import { Link } from "react-router-dom";
 
 const Search = () => {
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loadData, setLoadData] = useState(false);
 
   const auth = useSelector((state) => state.auth?.token);
@@ -14,6 +16,7 @@ const Search = () => {
   const handleClose = () => {
     setSearch("");
     setUsers([]);
+    setPosts([]);
   };
 
   const handleSearch = async (e) => {
@@ -21,21 +24,20 @@ const Search = () => {
     if (!search) return;
     try {
       setLoadData(true);
-      await getDataAPI(`/user/search/result?username=${search}`, auth).then(
-        (res) => {
-          const result = res.data.users;
-          if (result.length === 0) {
-            dispatch({
-              type: GLOBALTYPES.NOTIFY,
-              payload: {
-                err: "Không tìm thấy !",
-              },
-            });
-          } else {
-            setUsers(result);
-          }
+      await getDataAPI(`/search?search=${search}`, auth).then((res) => {
+        const result = res.data;
+        if (result.users.length === 0 && result.posts.length === 0) {
+          dispatch({
+            type: GLOBALTYPES.NOTIFY,
+            payload: {
+              err: "Không tìm thấy !",
+            },
+          });
+        } else {
+          setUsers(result.users);
+          setPosts(result.posts);
         }
-      );
+      });
       setLoadData(false);
     } catch (err) {
       dispatch({
@@ -54,9 +56,7 @@ const Search = () => {
         name="search"
         value={search}
         id="search"
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
+        onChange={(e) => setSearch(e.target.value)}
       />
       <div className="search_icon" style={{ opacity: search ? 0 : 0.5 }}>
         <span className="material-icons">search</span>
@@ -80,16 +80,39 @@ const Search = () => {
       <button type="submit" style={{ display: "none" }}>
         Tìm Kiếm
       </button>
-      <div className="users">
-        {search &&
-          users.map((user) => (
-            <UserCard
-              key={user._id}
-              user={user}
-              boder="boder"
-              handleClose={handleClose}
-            />
-          ))}
+      <div className="search_result">
+        <div className="users">
+          {search &&
+            users.map((user) => (
+              <UserCard
+                key={user._id}
+                user={user}
+                boder="boder"
+                handleClose={handleClose}
+              />
+            ))}
+        </div>
+        <div className="posts">
+          {search &&
+            posts.map((post) => (
+              <Link
+                to={`/post/${post._id}`}
+                key={post._id}
+                style={{ textDecoration: "none", color: "#000" }}
+                onClick={() => handleClose()}
+              >
+                <div
+                  style={{
+                    padding: "10px",
+                    borderTop: "1px solid #ccc",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {post.desc.slice(0, 70)} ...
+                </div>
+              </Link>
+            ))}
+        </div>
       </div>
     </form>
   );

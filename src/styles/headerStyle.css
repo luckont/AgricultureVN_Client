@@ -59,7 +59,7 @@
   transform: translateY(3px);
 }
 
-.header .search_box .users {
+.header .search_box .search_result {
   position: absolute;
   width: 100px;
   min-width: 300px;
