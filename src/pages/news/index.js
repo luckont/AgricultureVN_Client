@@ -39,6 +39,7 @@ const Index = () => {
   useEffect(() => {
     dispatch(getNewsPosts(auth.token));
   }, [auth, dispatch]);
+
   return (
     <div className="news_post row mx-0">
       <div className="news_times">{currentTime.format('YYYY-MM-DD HH:mm')}</div>

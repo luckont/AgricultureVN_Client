@@ -1,4 +1,4 @@
-.post_thumb {
+.diary_thumb {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -7,44 +7,42 @@
     overflow: hidden;
     margin: 15px 0;
 }
-.post_thumb_display {
+
+.diary_thumb_display {
     min-width: 150px;
     height: 150px;
     width: 100%;
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    /* border: 2px solid #000;
+    border-radius: 0 10px 10px 0; */
 }
-.post_thumb_display img{
+
+.diary_thumb_display img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
 }
-.post_thumb_display video{
+
+.diary_thumb_display video {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
 }
-.post_thumb_display .post_thumb_menu{
+
+.diary_thumb_display .diary_thumb_menu {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #0008;
+    background: rgba(31, 48, 35, 0.533);
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 0;
-    transition: 0.3s;
-}
-.post_thumb_display:hover .post_thumb_menu{
     opacity: 1;
-}
-.post_thumb_display .post_thumb_menu i{
-    font-size: 1.5rem;
-    color: white;
-    margin: 0 10px;
+    transition: 0.3s;
 }

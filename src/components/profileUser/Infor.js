@@ -5,12 +5,15 @@ import FollowBtn from "./FollowBtn";
 import Follower from "./Follower";
 import Subscriber from "./Subscriber";
 import MessageBtn from "./MessageBtn";
+import Diary from "./Diary";
 
 const Infor = ({ id, auth, profile, dispatch }) => {
   const [userData, setUserData] = useState([]);
   const [onEdit, setOnEdit] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [showSubscribers, setShowSubscribers] = useState(false);
+  const [onDiary, setOnDiary] = useState(false);
+
 
   useEffect(() => {
     if (id === auth.user._id) {
@@ -49,20 +52,27 @@ const Infor = ({ id, auth, profile, dispatch }) => {
             </div>
             <p>{user.desc}</p>
             {user._id === auth.user._id ? (
-              <button
-                className="btn btn-outline-primary"
-                onClick={() => setOnEdit(true)}
-              >
-                Cập nhật
-              </button>
+              <>
+                <button
+                  className="btn btn-outline-primary"
+                  style={{marginRight: "10px"}}
+                  onClick={() => setOnEdit(true)}
+                >
+                  Cập nhật
+                </button>
+                <button className="btn btn-success" onClick={() => setOnDiary(true)}>
+                  Thêm nhật ký
+                </button>
+              </>
             ) : (
               <div className="d-flex">
-              <FollowBtn user={user} />
-              <MessageBtn user={user} />
+                <FollowBtn user={user} />
+                <MessageBtn user={user} />
               </div>
             )}
           </div>
           {onEdit && <EditProfile user={user} setOnEdit={setOnEdit} />}
+          {onDiary && <Diary setOnDiary={setOnDiary} profile={profile} id={id} />}
           {showFollowers && (
             <Follower
               users={user.followers}

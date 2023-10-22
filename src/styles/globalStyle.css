@@ -73,3 +73,6 @@ img {
 
 /* News style  */
 @import url("./newsStyle.css");
+
+/* Diary Thumb style  */
+@import url("./diaryThumbStyle.css");
