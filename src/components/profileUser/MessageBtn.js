@@ -17,8 +17,8 @@ const MessageBtn = ({ user }) => {
         <div>
             <button className="btn btn-primary"
                 onClick={() => handleMessage(user)}
-                style={{ marginLeft: "20px" }}>
-                Nhắn tin
+                style={{ marginLeft: "5px" }}>
+                <i className="fas fa-envelope"></i>
             </button>
         </div>
     );

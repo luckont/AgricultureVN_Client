@@ -12,6 +12,7 @@ import notifyUser from "./notifyUserReducer";
 import message from "./messageReducer";
 import online from "./onlineReducer";
 import newsPost from "./newsPostReducer";
+import diary from "./diaryReducer";
 
 export default combineReducers({
   auth,
@@ -26,5 +27,6 @@ export default combineReducers({
   notifyUser,
   message,
   online,
-  newsPost
+  newsPost,
+  diary
 });

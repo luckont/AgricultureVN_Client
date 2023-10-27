@@ -41,6 +41,7 @@ img {
   margin: auto;
 }
 
+
 /* AUTH style */
 @import url("./authStyle.css");
 
@@ -76,3 +77,5 @@ img {
 
 /* Diary Thumb style  */
 @import url("./diaryThumbStyle.css");
+
+

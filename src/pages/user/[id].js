@@ -5,7 +5,6 @@ import Saved from "../../components/profileUser/Saved";
 import { getUserProfile } from "../../redux/actions/profileUserAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import Diary from "../../components/profileUser/Diary";
 import DiaryThumb from "../../components/profileUser/DiaryThumb";
 
 const User = () => {
@@ -48,14 +47,14 @@ const User = () => {
   return (
     <div className="profile">
       <Infor auth={auth} profile={profile} dispatch={dispatch} id={id} />
-      {
-        auth.user._id === id &&
-        <div className="profile_tab">
-          <button className={postTab ? "active" : ""} onClick={() => handleButtonPostClick()}>Bài viết</button>
-          <button className={diaryTab ? "active" : ""} onClick={() => handleButtonDiaryClick()}>Nhật ký</button>
-          <button className={saveTab ? "active" : ""} onClick={() => handleButtonSaveClick()}>Đã lưu</button>
-        </div>
-      }
+      <div className="profile_tab">
+        <button className={postTab ? "active" : ""} onClick={() => handleButtonPostClick()}><i className="fas fa-table"></i></button>
+        <button className={diaryTab ? "active" : ""} onClick={() => handleButtonDiaryClick()}><i className="fas fa-book"></i></button>
+        {
+          auth.user._id === id &&
+          <button className={saveTab ? "active" : ""} onClick={() => handleButtonSaveClick()}><i className="fas fa-bookmark"></i></button>
+        }
+      </div>
       {
         profile.loading
           ? <i>Đang tải dữ liệu ...</i>

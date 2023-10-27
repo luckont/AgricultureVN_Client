@@ -61,7 +61,7 @@ const Infor = ({ id, auth, profile, dispatch }) => {
                   Cập nhật
                 </button>
                 <button className="btn btn-success" onClick={() => setOnDiary(true)}>
-                  Thêm nhật ký
+                <i className="fas fa-book"></i>
                 </button>
               </>
             ) : (

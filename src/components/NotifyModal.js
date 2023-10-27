@@ -29,7 +29,7 @@ const NotifyModal = () => {
   }
 
   return (
-    <div style={{ minWidth: "300px" }}>
+    <div style={{ minWidth: "350px" }}>
       <div className="d-flex justify-content-between align-items-center px-3">
         <h3>Thông báo</h3>
         {notify.sound ? (
