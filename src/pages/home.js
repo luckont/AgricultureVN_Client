@@ -3,6 +3,7 @@ import Status from "../components/home/Status";
 import Posts from "../components/home/Posts";
 import { useSelector } from "react-redux";
 import RightSideBar from "../components/home/RightSideBar";
+import Diaries from "../components/home/Diaries";
 
 const HomePage = () => {
   const postHome = useSelector((state) => state.postHome);
@@ -14,11 +15,14 @@ const HomePage = () => {
           <Status />
           {
             postHome.loading ? (
-              <h1>Loading ....</h1>
+              <h5>Loading ....</h5>
             ) : postHome.result === 0 ? (
               <h1 className="text-center">Không có bài viết nào !</h1>
             ) : (
+             <>
+              <Diaries />
               <Posts />
+             </>
             )
           }
         </div>

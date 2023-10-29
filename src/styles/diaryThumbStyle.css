@@ -56,3 +56,38 @@
     font-weight: bold;
     font-size: 1rem;
 }
+.timeline .vertical-timeline-element-content {
+    background: var(--bg-color);
+    color: #000;
+    display: flex;
+    align-items: center,
+}
+.timeline .vertical-timeline-element-content-arrow {
+    border-right: 7px solid var(--bg-color);
+   
+}
+.timeline .vertical-timeline-element-icon {
+    background: var(--bg-color);
+    color: #000;
+}
+.vertical-timeline-element .content_timeline {
+    margin-left: 10px;
+}
+
+/* diary home */
+.diary_home {
+    border: 1px solid #ccc;
+    margin: 15px 0;
+    padding: 25px;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px){
+    .timeline .vertical-timeline-element-content {
+        display: grid;
+        grid-gap: 10px;
+    } 
+    .vertical-timeline-element .content_timeline {
+        margin-left: 0;
+    }
+  }

@@ -8,7 +8,7 @@ const Conversation = () => {
       <div className="col-md-3 border-right px-2 left_side">
         <LeftSide />
       </div>
-      <div className="col-md-9 px-2">
+      <div className="col-md-9 px-2 h-100">
         <RightSide />
       </div>
     </div>

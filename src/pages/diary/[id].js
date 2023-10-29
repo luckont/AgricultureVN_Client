@@ -110,34 +110,25 @@ const DiaryId = () => {
                   <VerticalTimelineElement
                     key={item._id}
                     className="vertical-timeline-element--work"
-                    contentStyle={{
-                      background: "#dff3c1",
-                      color: "#000",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    contentArrowStyle={{ borderRight: "7px solid  #dff3c1" }}
-                    iconStyle={{ background: "#dff3c1", color: "#000" }}
                   >
-                    <img
-                      style={{ maxWidth: "200px", objectFit: "cover" }}
-                      src={
-                        item.img.length > 0
-                          ? item.img[0].url
-                          : diary.user.profilePicture
-                      }
-                      alt="pic_post"
-                    />
-                    <div style={{ marginLeft: "10px" }}>
-                      <div>{item.desc.slice(0, 400)}</div>
-                      <i className="fa-solid fa-heart"></i>
-                      <small>{item.like.length}</small>
-                      <i
-                        className="fa-solid fa-comment"
-                        style={{ marginLeft: "10px" }}
-                      ></i>
-                      <small>{item.comments.length}</small>
-                    </div>
+                      <img
+                        src={
+                          item.img.length > 0
+                            ? item.img[0].url
+                            : diary.user.profilePicture
+                        }
+                        alt="pic_post"
+                      />
+                      <div className="content_timeline">
+                        <div>{item.desc.slice(0, 300)}</div>
+                        <i className="fa-solid fa-heart"></i>
+                        <small>{item.like.length}</small>
+                        <i
+                          className="fa-solid fa-comment"
+                          style={{ marginLeft: "10px" }}
+                        ></i>
+                        <small>{item.comments.length}</small>
+                      </div>
                   </VerticalTimelineElement>
                 ))}
               </VerticalTimeline>

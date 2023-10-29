@@ -4,9 +4,9 @@ const NotFound = () => {
     return (
         <div className="text-center pt-4" >
             <h1 className="text-secondary ">404 Not Found</h1>
-            <br />
         </div>
     );
 };
 
 export default NotFound;
+ 

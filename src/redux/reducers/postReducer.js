@@ -4,6 +4,7 @@ import { EditData, DeleteData } from "../actions/globalTyles";
 const initialState = {
   loading: false,
   posts: [],
+  diaries: [],
   result: 0,
   page: 2,
 };
@@ -26,6 +27,11 @@ const postReducer = (state = initialState, action) => {
         posts: action.payload.post,
         result: action.payload.result,
         page: action.payload.page
+      };
+    case POSTTYPES.GET_DIARIES_HOME:
+      return {
+        ...state,
+        diaries: action.payload.diaries,
       };
     case POSTTYPES.UPDATE_POST:
       return {

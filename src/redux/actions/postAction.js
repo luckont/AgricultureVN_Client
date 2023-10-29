@@ -8,6 +8,7 @@ export const POSTTYPES = {
   LOADING_POST: "LOADING_POST",
   LOADING_NEWS_POST: "LOADING_NEWS_POST",
   GET_POSTS: "GET_POSTS",
+  GET_DIARIES_HOME: "GET_DIARIES_HOME",
   UPDATE_POST: "UPDATE_POST",
   GET_POST: "GET_POST",
   DELETE_POST: "DELETE_POST",
@@ -57,6 +58,13 @@ export const getPosts = (token) => async (dispatch) => {
     dispatch({ type: POSTTYPES.LOADING_POST, payload: true });
 
     const res = await getDataAPI("/post", token);
+    const resDiaries = await getDataAPI("/diary", token)
+
+    dispatch({ 
+      type: POSTTYPES.GET_DIARIES_HOME, 
+      payload: { ...resDiaries.data } 
+    })
+
     dispatch({
       type: POSTTYPES.GET_POSTS,
       payload: { ...res.data },
@@ -145,10 +153,10 @@ export const likePost = ({ post, auth, socket }) => async (dispatch) => {
       text: 'Thích bài viết của bạn !',
       recipients: [post.user._id],
       url: `/post/${post._id}`,
-      content: post.content, 
+      content: post.content,
       image: post.img.length > 0 ? post.img[0].url : ""
     }
-    dispatch(createNotify({msg, auth, socket}))
+    dispatch(createNotify({ msg, auth, socket }))
 
   } catch (err) {
     dispatch({
@@ -170,14 +178,14 @@ export const unlikePost = ({ post, auth, socket }) => async (dispatch) => {
   try {
     await putDataAPI(`/post/${post._id}/unlike`, null, auth.token);
 
-     // Notify
-     const msg = {
+    // Notify
+    const msg = {
       id: auth.user._id,
       text: 'Bỏ thích bài viết của bạn !',
       recipients: [post.user._id],
       url: `/post/${post._id}`,
-  }
-  dispatch(removeNotify({msg, auth, socket}))
+    }
+    dispatch(removeNotify({ msg, auth, socket }))
 
   } catch (err) {
     dispatch({
@@ -205,7 +213,7 @@ export const deletePost = ({ post, auth, socket }) => async (dispatch) => {
   dispatch({ type: POSTTYPES.DELETE_POST, payload: post })
   try {
     const res = await deleteDataAPI(`/post/${post._id}`, auth.token)
-    
+
     // Notify
     const msg = {
       id: post._id,
