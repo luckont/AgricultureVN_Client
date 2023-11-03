@@ -97,7 +97,7 @@ const Diary = ({ id, profile, setOnDiary }) => {
             <div className="show_post">
               {posts.map((post, index) => (
                 <div key={post._id} className="d-flex justify-content-between">
-                  <div>{post._id}</div>
+                  <div>{post.desc.slice(0, 30)}</div>
                   {arrId.includes(post._id) && (
                     <span>Giai đoạn: {arrId.indexOf(post._id) + 1}</span>
                   )}

@@ -17,7 +17,7 @@ const RightSideBar = () => {
         <i className="fas fa-redo" onClick={() => dispatch(getSuggestions(auth.token))} style={{cursor: "pointer"}}/>
       </div>
       {suggestions.loading ? (
-        <p>Loading ...</p>
+        <p>Đang tải dữ liệu ...</p>
       ) : (
         <div className="suggestions">
           {suggestions.users.slice(0, 5).map((user) => (

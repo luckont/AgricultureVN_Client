@@ -15,7 +15,7 @@ const HomePage = () => {
           <Status />
           {
             postHome.loading ? (
-              <h5>Loading ....</h5>
+              <h5>Đang tải dữ liệu ...</h5>
             ) : postHome.result === 0 ? (
               <h1 className="text-center">Không có bài viết nào !</h1>
             ) : (

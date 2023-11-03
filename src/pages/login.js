@@ -3,18 +3,19 @@ import { Link } from "react-router-dom";
 import { login } from "../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Logo from "../images/logo_ngang.png";
 
 const LoginPage = () => {
   const initialState = { phoneNumber: "", password: "" };
   const [userData, setUserData] = useState(initialState);
   const { phoneNumber, password } = userData;
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [typePass, setTypePass] = useState(false);
   const dispatch = useDispatch();
   const notify = useSelector((state) => state.notify?.err);
-  const auth = useSelector((state) => state.auth?.token)
+  const auth = useSelector((state) => state.auth?.token);
 
   const handleChangeInput = (e) => {
     const { name, value } = e.target;
@@ -28,17 +29,17 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/")
+      navigate("/");
     }
-  })
+  });
 
   return (
     <div className="login_page">
       <form onSubmit={handleSubmit}>
-        <h3 className="text-uppercase text-center pb-4">Nông Nghiệp Việt Nam</h3>
+        <img src={Logo} alt="logo" className="logo_login" />
         <div className="mb-3">
           <label htmlFor="phoneNumberInput" className="form-label">
-            Nhập số điện thoại
+            Số điện thoại
           </label>
           <input
             type="text"
@@ -52,7 +53,7 @@ const LoginPage = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="exampleInputPassword1" className="form-label">
-            Nhập mật khẩu
+            Mật khẩu
           </label>
           <div className="pass">
             <input
@@ -64,19 +65,19 @@ const LoginPage = () => {
               name="password"
             />
             <small onClick={() => setTypePass(!typePass)}>
-              {typePass ? "Ẩn" : "Hiện"}
+              {typePass ? <i className="far fa-eye-slash"></i> : <i className="fas fa-eye"></i>}
             </small>
           </div>
         </div>
         <small className="text-danger">{notify}</small>
         <button
           type="submit"
-          className="btn btn-success w-100 mt-4"
+          className="login_btn"
           disabled={phoneNumber && password ? false : true}
         >
           Đăng nhập
         </button>
-        <p className="my-2">
+        <p className="my-4 text-center">
           Bạn chưa có tài khoản?{" "}
           <Link to="/register" style={{ textDecoration: "none" }}>
             Đăng ký

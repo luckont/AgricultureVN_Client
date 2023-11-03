@@ -77,4 +77,31 @@ export const deleteDiary = ({ auth, diary }) => async (dispatch) => {
         });
     }
 
-}
+};
+export const saveDiary = ({ diary, auth }) => async (dispatch) => {
+    const newUser = { ...auth.user, savedDiary: [...auth.user.savedDiary, diary._id] }
+    dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
+    try {
+      await putDataAPI(`/diary/saveDiary/${diary._id}`, null, auth.token)
+    } catch (err) {
+      dispatch({
+        type: GLOBALTYPES.NOTIFY,
+        payload: { err: err.response.data.msg },
+      });
+    }
+};
+export const unSaveDiary = ({ diary, auth }) => async (dispatch) => {
+    const newUser = { ...auth.user, savedDiary: auth.user.savedDiary.filter(id => id !== diary._id) }
+    dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
+  
+    try {
+      await putDataAPI(`/diary/unSaveDiary/${diary._id}`, null, auth.token)
+    } catch (err) {
+      dispatch({
+        type: GLOBALTYPES.NOTIFY,
+        payload: { err: err.response.data.msg },
+      })
+    }
+  };
+
+  

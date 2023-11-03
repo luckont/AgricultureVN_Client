@@ -109,7 +109,7 @@ const DiaryModal = ({ diary, setOnEdit }) => {
             <div className="show_post">
               {posts.map((post, index) => (
                 <div key={post._id} className="d-flex justify-content-between">
-                  <div>{post._id}</div>
+                  <div>{post.desc.slice(0, 30)}</div>
                   {arrIdPost.includes(post._id) && (
                     <span>Giai đoạn: {arrIdPost.indexOf(post._id) + 1}</span>
                   )}

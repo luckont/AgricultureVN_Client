@@ -68,10 +68,18 @@
 }
 .timeline .vertical-timeline-element-icon {
     background: var(--bg-color);
-    color: #000;
+    color: #979797;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .vertical-timeline-element .content_timeline {
     margin-left: 10px;
+}
+.timeline .vertical-timeline-element-content img {
+    max-height: 200px;
+    max-width: 200px;
 }
 
 /* diary home */

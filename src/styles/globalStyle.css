@@ -78,4 +78,7 @@ img {
 /* Diary Thumb style  */
 @import url("./diaryThumbStyle.css");
 
+/* notifications style */
+@import url("./notificationsStyle.css");
+
 

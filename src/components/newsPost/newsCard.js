@@ -12,9 +12,9 @@ const NewsCard = ({ posts }) => {
       <div className="news_card">
         <Avatar src={posts.user.profilePicture} size="big-avatar" />
         <div className="news_container">
-          <div className="d-flex align-items-center">
+          <div className="card_header">
             <div>
-              <small style={{ fontWeight: "bold" }}>
+              <small className="card_username">
                 {posts.user.username}
               </small>
               {posts.user.roles === "expert" && (
@@ -28,28 +28,16 @@ const NewsCard = ({ posts }) => {
           </div>
           <p className="mt-2 news_desc">{posts.desc}</p>
           <small>{posts.hashtag}</small>
-          <div>
+          <div className="card_footer">
             <i className="fa-solid fa-heart"></i>
-            <small
-              style={{
-                paddingLeft: "3px",
-                fontWeight: "bold",
-                fontSize: "1rem",
-              }}
-            >
+            <small>
               {posts.like.length}
             </small>
             <i
               className="fa-solid fa-comment"
               style={{ marginLeft: "10px" }}
             ></i>
-            <small
-              style={{
-                paddingLeft: "3px",
-                fontWeight: "bold",
-                fontSize: "1rem",
-              }}
-            >
+            <small>
               {posts.comments.length}
             </small>
           </div>

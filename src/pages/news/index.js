@@ -5,6 +5,7 @@ import NewsCard from "../../components/newsPost/newsCard";
 import UserCard from "../../components/UserCard";
 import FollowBtn from "../../components/profileUser/FollowBtn";
 import moment from "moment";
+import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 
 const Index = () => {
   const auth = useSelector((state) => state.auth);
@@ -13,7 +14,7 @@ const Index = () => {
 
   const dispatch = useDispatch();
   const [top10Post, setTop10Post] = useState([]);
-  const [currentTime, setCurrentTime] = useState(moment())
+  const [currentTime, setCurrentTime] = useState(moment());
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -37,12 +38,14 @@ const Index = () => {
   }, [newsPost]);
 
   useEffect(() => {
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: true } });
     dispatch(getNewsPosts(auth.token));
+    dispatch({ type: GLOBALTYPES.NOTIFY, payload: { loading: false } });
   }, [auth, dispatch]);
 
   return (
     <div className="news_post row mx-0">
-      <div className="news_times">{currentTime.format('YYYY-MM-DD HH:mm')}</div>
+      <div className="news_times">{currentTime.format("YYYY-MM-DD HH:mm")}</div>
       <div className="right_news col-md-8">
         <div className="expert_post">
           <h5 className="title_post">Bài viết từ chuyên gia</h5>
