@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import Alert from "./Alert";
 import Loading from "./Loading";
+import NotifyAdmin from "./NotifyAdmin";
 
 function Notify() {
   const dispatch = useDispatch();
   const notify = useSelector((state) => state.notify);
 
   const [showAlert, setShowAlert] = useState(false);
+  const [showAdminNotify, setShowAdminNotify] = useState(false);
 
   useEffect(() => {
     if (notify.err || notify.success) {
@@ -19,7 +21,10 @@ function Notify() {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [notify.err, notify.success, dispatch]);
+    if(notify.notifyAdmin){
+      setShowAdminNotify(true)
+    }
+  }, [notify.err, notify.success, notify.notifyAdmin, dispatch]);
 
   return (
     <div>
@@ -36,6 +41,9 @@ function Notify() {
           }}
           bgColor={notify.err ? "bg-danger" : "bg-success"}
         />
+      )}
+      {showAdminNotify && (
+        <NotifyAdmin msg={notify.notifyAdmin} setShowAdminNotify={setShowAdminNotify}/>
       )}
     </div>
   );
