@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
 import { createPost, updatePost } from "../redux/actions/postAction";
-import Icons from "./Icons";
 import { imageShow, videoShow } from "../untils/mediaShow";
+import { createProduct } from "../redux/actions/productAction";
+import Icons from "./Icons";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
@@ -13,6 +14,10 @@ const StatusModal = () => {
   const dispatch = useDispatch();
 
   const [content, setContent] = useState("");
+  const [price, setPrice] = useState("");
+  const [address, setAddress] = useState("");
+  const [typeProduct, setTypeProduct] = useState("");
+  const [productName, setProductName] = useState("");
   const [hashtag, setHashtag] = useState("");
   const [images, setImages] = useState([]);
 
@@ -43,6 +48,19 @@ const StatusModal = () => {
     e.preventDefault();
     if (status.onEdit) {
       dispatch(updatePost({ content, hashtag, images, auth, status }));
+    } else if (status.onMarket) {
+      dispatch(
+        createProduct({
+          content,
+          price,
+          address,
+          typeProduct,
+          hashtag,
+          images,
+          productName,
+          auth,
+        })
+      );
     } else {
       dispatch(createPost({ content, hashtag, images, auth, socket }));
     }
@@ -65,7 +83,13 @@ const StatusModal = () => {
     <div className="status_modal">
       <form onSubmit={handleSubmit}>
         <div className="status_title">
-          <h5 className="m-0">Tạo bài viết mới</h5>
+          <h5 className="m-0">
+            {status.onEdit
+              ? "Cập nhật bài viết"
+              : status.onMarket
+              ? "Tạo sản phẩm mới"
+              : "Tạo bài viết mới"}
+          </h5>
           <span
             onClick={() =>
               dispatch({ type: GLOBALTYPES.STATUS, payload: false })
@@ -79,9 +103,61 @@ const StatusModal = () => {
           <textarea
             name="content"
             value={content}
-            placeholder={`${auth.user.username}, Bạn đang nghĩ gì ?`}
+            placeholder={
+              status.onMarket
+                ? "Giới thiệu sản phẩm của bạn !"
+                : `${auth.user.username}, Bạn đang nghĩ gì ?`
+            }
             onChange={(e) => setContent(e.target.value)}
           />
+          {status.onMarket && (
+            <>
+              <div className="pb-2">
+                <small>Tên SP: </small>
+                <input
+                  className="hastag_box"
+                  type="text"
+                  name="price"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="Nhập tên sản phẩm ..."
+                />
+              </div>
+              <div className="pb-2">
+                <small>Giá (VNĐ): </small>
+                <input
+                  className="hastag_box"
+                  type="text"
+                  name="price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Nhập giá bán ..."
+                />
+              </div>
+              <div className="pb-2">
+                <small>Phân loại: </small>
+                <input
+                  className="hastag_box"
+                  type="text"
+                  name="address"
+                  value={typeProduct}
+                  onChange={(e) => setTypeProduct(e.target.value)}
+                  placeholder="Lương thực, phân bón ..."
+                />
+              </div>
+              <div className="pb-2">
+                <small>Địa chỉ: </small>
+                <input
+                  className="hastag_box"
+                  type="text"
+                  name="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="Tỉnh/Thành phố ..."
+                />
+              </div>
+            </>
+          )}
           <div>
             <small>Từ khóa: </small>
             <input

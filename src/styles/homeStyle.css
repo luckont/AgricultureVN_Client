@@ -59,12 +59,12 @@
     color: #adadad;
 }
 
-.posts .carousel-inner {
+.carousel-inner {
     height: 400px;
 }
 
-.posts .carousel-inner video,
-.posts .carousel-inner img{
+.carousel-inner video,
+.carousel-inner img{
     height: 400px;
     object-fit: contain;
 }

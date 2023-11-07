@@ -13,6 +13,7 @@ import message from "./messageReducer";
 import online from "./onlineReducer";
 import newsPost from "./newsPostReducer";
 import diary from "./diaryReducer";
+import market from "./productReducer";
 
 export default combineReducers({
   auth,
@@ -28,5 +29,6 @@ export default combineReducers({
   message,
   online,
   newsPost,
-  diary
+  diary,
+  market
 });

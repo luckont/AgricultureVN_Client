@@ -41,7 +41,6 @@ img {
   margin: auto;
 }
 
-
 /* AUTH style */
 @import url("./authStyle.css");
 
@@ -81,4 +80,5 @@ img {
 /* notifications style */
 @import url("./notificationsStyle.css");
 
-
+/* market style */
+@import url("./productStyle.css");

@@ -57,8 +57,9 @@
 .status_container .hastag_box{
   outline: none;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
   width: 80%;
+  font-weight: bold;
 }
 
 .status_container .file_upload {

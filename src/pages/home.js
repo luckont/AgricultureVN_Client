@@ -20,8 +20,8 @@ const HomePage = () => {
               <h1 className="text-center">Không có bài viết nào !</h1>
             ) : (
              <>
-              <Diaries />
               <Posts />
+              <Diaries />
              </>
             )
           }

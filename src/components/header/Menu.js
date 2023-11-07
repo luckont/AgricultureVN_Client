@@ -21,8 +21,8 @@ const Menu = () => {
   const navLinks = [
     { label: "Nổi bật", icon: "feed", path: "/news" },
     { label: "Trang chủ", icon: "home", path: "/" },
+    { label: "Chợ", icon: "shopping_bag", path: "/market"},
     { label: "Tin nhắn", icon: "send", path: "/message" },
-
   ];
   return (
     <div className="menu">
