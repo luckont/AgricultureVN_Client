@@ -3,6 +3,7 @@ import { imageUpload } from "../../untils/imageUpload";
 import { DIARYTYPES } from "./diaryAction";
 import { DeleteData, GLOBALTYPES } from "./globalTyles";
 import { createNotify, removeNotify } from "./notifyAction";
+import { PRODUCTTYPE } from "./productAction";
 
 export const PROFILE_USER = {
   LOADING: "LOADING_USER",
@@ -20,12 +21,23 @@ export const getUserProfile = ({ auth, id }) => async (dispatch) => {
     const res = await getDataAPI(`/user/${id}`, auth.token);
     const resPosts = await getDataAPI(`/post/user_posts/${id}`, auth.token);
     const resDiary = await getDataAPI(`/diary/g/${id}`, auth.token)
-    dispatch({ type: DIARYTYPES.GET_DIARIES, payload: resDiary.data.diary })
+    const resProducts = await getDataAPI(`/market/user_products/${id}`, auth.token);
+    
+    dispatch({
+      type: PRODUCTTYPE.GET_USER_PRODUCTS,
+      payload: resProducts.data.userProduct,
+    })
+    
+    dispatch({ 
+      type: DIARYTYPES.GET_DIARIES, 
+      payload: resDiary.data.diary 
+    })
 
     dispatch({
       type: PROFILE_USER.GET_USER,
       payload: res.data,
     });
+
     dispatch({
       type: PROFILE_USER.GET_POSTS,
       payload: { ...resPosts.data, _id: id, page: 2 },

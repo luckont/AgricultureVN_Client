@@ -24,6 +24,7 @@ const Menu = () => {
     { label: "Chợ", icon: "shopping_bag", path: "/market"},
     { label: "Tin nhắn", icon: "send", path: "/message" },
   ];
+  
   return (
     <div className="menu">
       <ul className="navbar-nav flex-row">

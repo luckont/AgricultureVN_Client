@@ -1,8 +1,10 @@
+import { DeleteData, EditData } from "../actions/globalTyles";
 import { PRODUCTTYPE } from "../actions/productAction";
 
 const initialState = {
   products: [],
   product: [],
+  userProducts: [],
   result: 0,
 };
 
@@ -24,6 +26,21 @@ const productReducer = (state = initialState, action) => {
         ...state,
         product: [action.payload],
       };
+    case PRODUCTTYPE.GET_USER_PRODUCTS:
+      return {
+        ...state,
+        userProducts: action.payload
+      }
+    case PRODUCTTYPE.UPDATE_PRODUCT:
+      return {
+        ...state,
+        products: EditData(state.products, action.payload._id, action.payload)
+      }
+    case PRODUCTTYPE.DELETE_PRODUCT:
+      return {
+       ...state,
+        products: DeleteData(state.products, action.payload._id)
+      }
     default:
       return state;
   }

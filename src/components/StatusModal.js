@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../redux/actions/globalTyles";
 import { createPost, updatePost } from "../redux/actions/postAction";
 import { imageShow, videoShow } from "../untils/mediaShow";
-import { createProduct } from "../redux/actions/productAction";
+import { createProduct, updateProduct } from "../redux/actions/productAction";
 import Icons from "./Icons";
+import category from "../data/category.json";
 
 const StatusModal = () => {
   const auth = useSelector((state) => state.auth);
@@ -61,6 +62,20 @@ const StatusModal = () => {
           auth,
         })
       );
+    } else if (status.onEditProduct) {
+      dispatch(
+        updateProduct({
+          content,
+          price,
+          address,
+          typeProduct,
+          hashtag,
+          images,
+          productName,
+          auth,
+          status,
+        })
+      );
     } else {
       dispatch(createPost({ content, hashtag, images, auth, socket }));
     }
@@ -77,6 +92,15 @@ const StatusModal = () => {
       setImages(status.img);
       setHashtag(status.hashtag);
     }
+    if (status.onEditProduct) {
+      setContent(status.desc);
+      setPrice(status.price);
+      setAddress(status.address);
+      setTypeProduct(status.typeProduct);
+      setHashtag(status.hashtag);
+      setImages(status.img);
+      setProductName(status.productName);
+    }
   }, [status]);
 
   return (
@@ -88,6 +112,8 @@ const StatusModal = () => {
               ? "Cập nhật bài viết"
               : status.onMarket
               ? "Tạo sản phẩm mới"
+              : status.onEditProduct
+              ? "Cập nhật sản phẩm"
               : "Tạo bài viết mới"}
           </h5>
           <span
@@ -110,7 +136,7 @@ const StatusModal = () => {
             }
             onChange={(e) => setContent(e.target.value)}
           />
-          {status.onMarket && (
+          {(status.onMarket || status.onEditProduct) && (
             <>
               <div className="pb-2">
                 <small>Tên SP: </small>
@@ -136,25 +162,35 @@ const StatusModal = () => {
               </div>
               <div className="pb-2">
                 <small>Phân loại: </small>
-                <input
+                <select
                   className="hastag_box"
-                  type="text"
                   name="address"
                   value={typeProduct}
                   onChange={(e) => setTypeProduct(e.target.value)}
-                  placeholder="Lương thực, phân bón ..."
-                />
+                >
+                  <option value="">Chọn một phân loại</option>
+                  {category.category.map((item, index) => (
+                    <option key={index} value={item.label}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="pb-2">
                 <small>Địa chỉ: </small>
-                <input
+                <select
                   className="hastag_box"
-                  type="text"
                   name="address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Tỉnh/Thành phố ..."
-                />
+                >
+                  <option value="">Tỉnh/Thành phố ...</option>
+                  {category.city.map((item, index) => (
+                    <option key={index} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </>
           )}

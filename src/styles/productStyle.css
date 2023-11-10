@@ -1,3 +1,9 @@
+.categories_container{
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
 .market {
   width: 100%;
   display: grid;
@@ -9,7 +15,7 @@
   padding: 0 10px;
 }
 .product_card {
-  min-width: 200px;
+  min-width: 150px;
   height: 350px;
   width: 100%;
   position: relative;
@@ -69,6 +75,9 @@
 .contact_user {
    width: 100%;
    text-align: center;
+   padding: 10px;
+   margin-top: 20px;
+   border: 1px solid #ccc
 }
 
 .contact_user .contact_phone,
@@ -85,7 +94,12 @@
     font-size: 1.5rem;
     padding: 5px;
 }
-
+.attention_product {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+}
 @media (max-width: 768px) {
   .card_detail {
     width: 100%;

@@ -26,6 +26,7 @@ const Product = () => {
     <div className="card_detail">
       {product.map((item) => (
         <div key={item._id} className="row">
+          {/* Left product detail */}
           <div className="col-md-8">
             <div className="carousel_detail_product">
               {item.img.length > 0 && (
@@ -34,8 +35,11 @@ const Product = () => {
             </div>
             <h3 className="py-2">{item.productName}</h3>
             <h5 className="product_card_price">{item.price}</h5>
+            <br/>
+            <h5>Mô tả sản phẩm</h5>
             <p>{item.desc}</p>
           </div>
+          {/* Right product detail */}
           <div className="col-md-4">
             <div>
               <div className="d-flex align-items-center">
@@ -63,6 +67,7 @@ const Product = () => {
                 </div>
               </div>
               <div className="contact_user">
+                <h5>Liên hệ người bán</h5>
                 <div className="contact_phone">
                   <i className="fas fa-phone-alt fa-rotate-90"></i>
                   <span>{item.user.phoneNumber}</span>
@@ -71,6 +76,14 @@ const Product = () => {
                   <i className="fas fa-comments"></i>
                   <span>Nhắn tin</span>
                 </div>
+              </div>
+              <div className="attention_product">
+                <i className="fas fa-angle-double-right"></i>  
+                <i>
+                  Lựa chọn hình thức giao hàng an toàn-uy tín-hiệu quả, khi nhận
+                  hàng hãy kiểm tra cẩn thận chất lượng sản phẩm sau đó mới trả
+                  tiền.
+                </i>
               </div>
             </div>
           </div>

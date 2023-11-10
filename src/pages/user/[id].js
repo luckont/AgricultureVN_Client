@@ -6,6 +6,7 @@ import { getUserProfile } from "../../redux/actions/profileUserAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import DiaryThumb from "../../components/profileUser/DiaryThumb";
+import UserProducts from "../../components/profileUser/UserProducts";
 
 const User = () => {
   const auth = useSelector((state) => state.auth);
@@ -16,23 +17,34 @@ const User = () => {
   const [saveTab, setSaveTab] = useState(false);
   const [diaryTab, setDiaryTab] = useState(false);
   const [postTab, setPostTab] = useState(true);
+  const [productTab, setProductTab] = useState(false);
 
   const handleButtonSaveClick = () => {
     setDiaryTab(false);
     setPostTab(false);
     setSaveTab(true);
+    setProductTab(false);
+  };
+
+  const handleButtonProductsClick = () => {
+    setDiaryTab(false);
+    setPostTab(false);
+    setSaveTab(false);
+    setProductTab(true);
   };
 
   const handleButtonPostClick = () => {
     setDiaryTab(false);
     setPostTab(true);
     setSaveTab(false);
+    setProductTab(false);
   };
 
   const handleButtonDiaryClick = () => {
     setDiaryTab(true);
     setPostTab(false);
     setSaveTab(false);
+    setProductTab(false);
   };
 
   const { id } = useParams();
@@ -59,6 +71,12 @@ const User = () => {
         >
           <i className="fas fa-book"></i>
         </button>
+        <button
+          className={productTab ? "active" : ""}
+          onClick={() => handleButtonProductsClick()}
+        >
+          <i className="fas fa-shopping-bag"></i>
+        </button>
         {auth.user._id === id && (
           <button
             className={saveTab ? "active" : ""}
@@ -77,6 +95,7 @@ const User = () => {
             <Post auth={auth} profile={profile} dispatch={dispatch} id={id} />
           )}
           {diaryTab && <DiaryThumb auth={auth} />}
+          {productTab && <UserProducts id={id} />}
         </>
       )}
     </div>

@@ -8,7 +8,7 @@ const MessageBtn = ({ user }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleMessage = (user) => {
+    const handleMessage = () => {
         dispatch({ type: MESS_TYPES.ADD_USER, payload: { ...user, text: "", media: [] } });
         navigate(`/message/${user._id}`)
     };
@@ -16,7 +16,7 @@ const MessageBtn = ({ user }) => {
     return (
         <div>
             <button className="btn btn-primary"
-                onClick={() => handleMessage(user)}
+                onClick={handleMessage}
                 style={{ marginLeft: "5px" }}>
                 <i className="fas fa-envelope"></i>
             </button>
