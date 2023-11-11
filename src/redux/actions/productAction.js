@@ -48,12 +48,16 @@ export const createProduct = ({ content, price, address, typeProduct, hashtag, i
   }
 };
 
-export const getProducts = ({ auth, category }) => async (dispatch) => {
+export const getProducts = ({ auth, category, search }) => async (dispatch) => {
   try {
-    let endpoint = "/market/s/category";
+    let endpoint = "/market";
 
     if (category) {
-      endpoint += `?category=${category}`;
+      endpoint += `/s/category?category=${category}`;
+    }
+
+    if(search) {
+      endpoint += `/s/search?search=${search}`;
     }
 
     const res = await getDataAPI(endpoint, auth.token);

@@ -71,7 +71,23 @@
   width: 70%;
   margin: 0 auto;
 }
-
+.card_detail .search_product {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.search_product form {
+  width: 70%;
+  padding-right: 10px;
+}
+.search_product .btn_post_product {
+  width: 30%;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: var(--bg-color);
+  font-weight: bold;
+}
 .contact_user {
    width: 100%;
    text-align: center;
@@ -100,6 +116,7 @@
   margin-top: 10px;
   font-size: 12px;
 }
+
 @media (max-width: 768px) {
   .card_detail {
     width: 100%;

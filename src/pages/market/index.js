@@ -1,16 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import { getProducts } from "../../redux/actions/productAction";
 import Products from "../../components/market/Products";
-import category from "../../data/category.json"
+import category from "../../data/category.json";
 
 const Market = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  const [search, setSearch] = useState("");
+
   const handleGetCategory = (category) => {
     dispatch(getProducts({ auth, category }));
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!search) return;
+    dispatch(getProducts({ auth, search }));
   };
 
   useEffect(() => {
@@ -19,10 +27,20 @@ const Market = () => {
 
   return (
     <div className="card_detail">
-      <div className="d-flex justify-content-between align-items-center">
-        <h2>CHỢ NÔNG NGHIỆP</h2>
+      <div className="search_product">
+        <form onSubmit={handleSearch} className="form_search">
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              value={search}
+              placeholder="Tìm kiếm ..."
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </form>
         <button
-          className="btn btn-success"
+          className="btn_post_product"
           onClick={() =>
             dispatch({ type: GLOBALTYPES.STATUS, payload: { onMarket: true } })
           }
