@@ -37,3 +37,13 @@
   background: var(--bg-color);
   font-weight: bold;
 }
+.news_post {
+  width: 75%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .news_post {
+    width: 100%;
+  }
+}

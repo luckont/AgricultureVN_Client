@@ -88,3 +88,12 @@
 .card_footer .shareModal {
     background: var(--bg-color);
 }
+
+.switch_post {
+    text-align: center;
+    font-weight: 600;
+    padding: 10px 0;
+    border: 1px solid var(--bg-color);
+    border-radius: 5px;
+    background: linear-gradient(0, var(--bg-color), #fff);
+}

@@ -2,31 +2,39 @@
     "category": [
         {
             "label": "Lúa, Gạo",
-            "icon": "feed"
+            "icon": "grass"
         },
         {
             "label": "Động vật",
-            "icon": "home"
+            "icon": "pets"
         },
         {
             "label": "Rau, củ quả",
-            "icon": "shopping_bag"
+            "icon": "eco"
         },
         {
             "label": "Thuỷ sản",
-            "icon": "home"
+            "icon": "water"
         },
         {
             "label": "Thuốc BVTV",
-            "icon": "send"
+            "icon": "vaccines"
         },
         {
             "label": "Phân bón",
-            "icon": "feed"
+            "icon": "archive"
+        },
+        {
+            "label": "Cây giống",
+            "icon": "nature"
+        },
+        {
+            "label": "Phụ phẩm",
+            "icon": "warehouse"
         },
         {
             "label": "Khác",
-            "icon": "shopping_bag"
+            "icon": "more"
         }
     ],
     "city": [

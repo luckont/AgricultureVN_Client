@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import UserCard from "../UserCard";
 import FollowBtn from "../profileUser/FollowBtn";
 import { getSuggestions } from "../../redux/actions/suggestionAction";
+import UserCardVertical from "../UserCardVertical";
 
 
 const RightSideBar = () => {
@@ -19,11 +19,11 @@ const RightSideBar = () => {
       {suggestions.loading ? (
         <p>Đang tải dữ liệu ...</p>
       ) : (
-        <div className="suggestions">
+        <div className="suggestions d-flex justify-content-start" style={{overflow: "auto"}}>
           {suggestions.users.slice(0, 5).map((user) => (
-            <UserCard key={user._id} user={user}>
+            <UserCardVertical key={user._id} user={user}>
               <FollowBtn user={user} />
-            </UserCard>
+            </UserCardVertical>
           ))}
         </div>
       )}

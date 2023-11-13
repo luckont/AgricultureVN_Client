@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const PostThumb = ({ posts, result }) => {
 
-  if (result === 0) return <h2 className="text-center">Chưa có bài viết !</h2>
+  if (result === 0) return <h5>Chưa có bài viết !</h5>
 
   return (
     <div className="post_thumb">

@@ -63,7 +63,7 @@ const Saved = ({ auth, dispatch }) => {
 
   return (
     <div>
-      <div className="profile_tab">
+      <div className="profile_tab" style={{border: "none"}}>
         <button
           className={postTab ? "active" : ""}
           onClick={() => setPostTab(true)}

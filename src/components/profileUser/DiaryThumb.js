@@ -6,9 +6,12 @@ const DiaryThumb = () => {
 
   const diary = useSelector((state) => state.diary?.diaries)
 
+  if (diary.length === 0) return <h5>Chưa có nhật ký !</h5>
+
+
   return (
     <div className="diary_thumb">
-      {diary.length > 0 ? (
+      {diary.length > 0 && (
         diary.map((item) => (
           <Link
             to={`/diary/${item._id}`}
@@ -38,8 +41,6 @@ const DiaryThumb = () => {
             </div>
           </Link>
         ))
-      ) : (
-        <h5>Chưa có nhật ký!</h5>
       )}
     </div>
   );
