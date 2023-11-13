@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { GLOBALTYPES } from "../../../redux/actions/globalTyles";
 import { deletePost } from "../../../redux/actions/postAction";
-import { BASE_URL } from "../../../untils/config"
+import { BASE_URL } from "../../../untils/config";
 import moment from "moment";
+import { createReport } from "../../../redux/actions/reportAction";
 
 const CardHeader = ({ post }) => {
   const auth = useSelector((state) => state.auth);
@@ -18,7 +19,9 @@ const CardHeader = ({ post }) => {
     dispatch({ type: GLOBALTYPES.STATUS, payload: { ...post, onEdit: true } });
   };
   const handleDeletePost = () => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa bài viết này?");
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa bài viết này?"
+    );
     if (confirmDelete) {
       dispatch(deletePost({ post, auth, socket }));
       return navigate("/");
@@ -26,14 +29,38 @@ const CardHeader = ({ post }) => {
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`)
+    navigator.clipboard
+      .writeText(`${BASE_URL}/post/${post._id}`)
       .then(() => {
-        dispatch({ type: GLOBALTYPES.NOTIFY, payload: { success: "Đã sao chép liên kết thành công" } })
+        dispatch({
+          type: GLOBALTYPES.NOTIFY,
+          payload: { success: "Đã sao chép liên kết thành công" },
+        });
       })
       .catch((error) => {
-        dispatch({ type: GLOBALTYPES.NOTIFY, payload: { err: "Lỗi khi sao chép:" + error } })
+        dispatch({
+          type: GLOBALTYPES.NOTIFY,
+          payload: { err: "Lỗi khi sao chép:" + error },
+        });
       });
-  }
+  };
+
+  const handleReport = () => {
+    const confirmReport = window.prompt("Lý do báo cáo: ");
+    if (confirmReport) {
+      const report = {
+       user: auth.user._id,
+       related: post._id,
+       text: confirmReport,
+       type: "post"
+      }
+       dispatch(createReport({report, auth}));
+       dispatch({
+        type: GLOBALTYPES.NOTIFY,
+        payload: { success: "Cảm ơn bạn đã đóng góp !" },
+      });
+    } 
+  };
 
   return (
     <div className="card_header">
@@ -49,7 +76,12 @@ const CardHeader = ({ post }) => {
             >
               {post.user.username}
             </Link>
-            { post.user.roles === "expert" && <i className="fa-solid fa-circle-check text-success" style={{fontSize: "10px", paddingLeft: "5px"}}></i>}
+            {post.user.roles === "expert" && (
+              <i
+                className="fa-solid fa-circle-check text-success"
+                style={{ fontSize: "10px", paddingLeft: "5px" }}
+              ></i>
+            )}
           </h6>
           <p className="m-0 text-muted" style={{ fontSize: "0.7rem" }}>
             {moment(post.createdAt).fromNow()}
@@ -79,7 +111,11 @@ const CardHeader = ({ post }) => {
             </>
           )}
           <div className="dropdown-item" onClick={handleCopyLink}>
-            <span className="material-symbols-outlined">share</span> Sao chép liên kết
+            <span className="material-symbols-outlined">share</span> Sao chép
+            liên kết
+          </div>
+          <div className="dropdown-item" onClick={handleReport}>
+            <span className="material-symbols-outlined">report</span> Báo cáo
           </div>
         </div>
       </div>

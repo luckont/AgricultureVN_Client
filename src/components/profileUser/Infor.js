@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { GLOBALTYPES } from "../../redux/actions/globalTyles";
 import Avatar from "../Avatar";
 import EditProfile from "./EditProfile";
 import FollowBtn from "./FollowBtn";
@@ -6,6 +7,8 @@ import Follower from "./Follower";
 import Subscriber from "./Subscriber";
 import MessageBtn from "./MessageBtn";
 import Diary from "./Diary";
+
+import { createReport } from "../../redux/actions/reportAction";
 
 const Infor = ({ id, auth, profile, dispatch }) => {
   const [userData, setUserData] = useState([]);
@@ -23,6 +26,23 @@ const Infor = ({ id, auth, profile, dispatch }) => {
       setUserData(newData);
     }
   }, [auth, dispatch, id, profile.users]);
+
+  const handleReport = () => {
+    const confirmReport = window.prompt("Lý do báo cáo: ");
+    if (confirmReport) {
+      const report = {
+       user: auth.user._id,
+       related: id,
+       text: confirmReport,
+       type: "user"
+      }
+       dispatch(createReport({report, auth}));
+       dispatch({
+        type: GLOBALTYPES.NOTIFY,
+        payload: { success: "Cảm ơn bạn đã đóng góp !" },
+      });
+    } 
+  };
 
   return (
     <div className="infor">
@@ -68,6 +88,7 @@ const Infor = ({ id, auth, profile, dispatch }) => {
               <div className="d-flex">
                 <FollowBtn user={user} />
                 <MessageBtn user={user} />
+                <button className="btn btn-warning" style={{marginLeft: "5px"}} onClick={handleReport}>!</button>
               </div>
             )}
           </div>

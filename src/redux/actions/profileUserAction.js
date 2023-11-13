@@ -117,7 +117,6 @@ export const followUser = ({ users, user, auth, socket }) => async (dispatch) =>
   } else {
     users.forEach((item) => {
       if (item._id === user._id) {
-        console.log(item._id);
         newUser = { ...item, followers: [...item.followers, auth.user] };
       }
     });
