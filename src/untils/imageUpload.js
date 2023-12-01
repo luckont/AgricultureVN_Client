@@ -33,6 +33,8 @@ export const imageUpload = async (image) => {
 
     const data = await res.json();
 
+    console.log(data);
+
     arr.push({ public_id: data.public_id, url: data.secure_url });
   }
   return arr;

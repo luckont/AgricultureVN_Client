@@ -8,12 +8,13 @@ const EditProfile = ({ setOnEdit }) => {
   const initState = {
     username: "",
     phoneNumber: "",
+    password: "",
     desc: "",
   };
 
   const dispatch = useDispatch();
   const [userData, setUserData] = useState(initState);
-  const { username, phoneNumber, desc } = userData;
+  const { username, phoneNumber, password, desc } = userData;
   const [profilePicture, setProfilePicture] = useState("");
 
   const currentUser = useSelector((state) => state.auth?.user);
@@ -45,6 +46,7 @@ const EditProfile = ({ setOnEdit }) => {
 
   useEffect(() => {
     setUserData(currentUser);
+    console.log(currentUser);
   }, [currentUser]);
 
   return (
@@ -109,6 +111,17 @@ const EditProfile = ({ setOnEdit }) => {
             type="text"
             name="phoneNumber"
             value={phoneNumber}
+            className="form-control"
+            onChange={handleInput}
+          />
+        </div>
+
+        <div className="form-group my-2">
+          <label htmlFor="password">Mật khẩu</label>
+          <input
+            type="text"
+            name="password"
+            value={password}
             className="form-control"
             onChange={handleInput}
           />

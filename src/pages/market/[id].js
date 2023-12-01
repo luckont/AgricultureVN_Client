@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProduct } from "../../redux/actions/productAction";
 import Carousel from "../../components/Carousel";
 import Avatar from "../../components/Avatar";
+import { MESS_TYPES } from "../../redux/actions/messageAction";
+import { addMessage } from "../../redux/actions/messageAction";
 
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
   const productDetail = useSelector((state) => state.market.product);
+  const socket = useSelector((state) => state.socket);
 
   useEffect(() => {
     dispatch(getProduct({ productDetail, auth, id }));
@@ -21,6 +25,23 @@ const Product = () => {
       setProduct(newArr);
     }
   }, [dispatch, auth, id, productDetail]);
+
+  const handleMessage = () => {
+    dispatch({
+      type: MESS_TYPES.ADD_USER,
+      payload: { ...product[0].user, text: "", media: [] },
+    });
+    navigate(`/message/${product[0].user._id}`);
+
+    const msg = {
+      sender: auth.user._id,
+      recipient: product[0].user._id,
+      text: "Tôi muốn biết thêm thông tin về sản phẩm: " + product[0].productName,
+      media: product[0].img,
+      createdAt: new Date().toISOString(),
+    };
+    dispatch(addMessage({ msg, auth, socket }));
+  };
 
   return (
     <div className="card_detail">
@@ -35,7 +56,7 @@ const Product = () => {
             </div>
             <h3 className="py-2">{item.productName}</h3>
             <h5 className="product_card_price">{item.price}</h5>
-            <br/>
+            <br />
             <h5>Mô tả sản phẩm</h5>
             <p>{item.desc}</p>
           </div>
@@ -72,13 +93,13 @@ const Product = () => {
                   <i className="fas fa-phone-alt fa-rotate-90"></i>
                   <span>{item.user.phoneNumber}</span>
                 </div>
-                <div className="contact_message">
+                <div className="contact_message" onClick={handleMessage} style={{cursor: "pointer"}}>
                   <i className="fas fa-comments"></i>
                   <span>Nhắn tin</span>
                 </div>
               </div>
               <div className="attention_product">
-                <i className="fas fa-angle-double-right"></i>  
+                <i className="fas fa-angle-double-right"></i>
                 <i>
                   Lựa chọn hình thức giao hàng an toàn-uy tín-hiệu quả, khi nhận
                   hàng hãy kiểm tra cẩn thận chất lượng sản phẩm sau đó mới trả
